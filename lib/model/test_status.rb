@@ -13,7 +13,10 @@ module Model
     attr_accessor :test_file_status, :test_text_status
     
     def success?
-      ((@test_file_status == true) && (@test_text_status == true))
+      (
+        (@test_file_status.nil? || @test_file_status == true) && 
+        (@test_text_status.nil? || @test_text_status == true)
+      )
     end
     
     def error?

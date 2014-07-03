@@ -42,7 +42,7 @@ class TestTestSuite < Test::Unit::TestCase
     assert_equal suite.wsdl, 'http://path/to/wsdl?wsdl'
     assert_equal suite.service, 'test_service'
     assert_equal suite.tags, ['dev', 'test', 'production']
-    assert_nil suite.tests
+    assert_equal suite.tests, []
     
     props[:tags] = 'dev, test'
     assert_equal TestSuite.new(props).tags, ['dev', 'test']
@@ -63,7 +63,7 @@ class TestTestSuite < Test::Unit::TestCase
     assert_equal suite.wsdl, 'http://path/to/wsdl?wsdl'
     assert_equal suite.service, 'test_service'
     assert_equal suite.tags, ['dev', 'test', 'production']
-    assert_nil suite.tests
+    assert_equal suite.tests, []
   end
 
 end

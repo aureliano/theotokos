@@ -8,6 +8,7 @@ module Model
       else
         _load_properties opt
       end
+      @tests = _load_tests opt[:tests]
     end
     
     attr_accessor :source, :wsdl, :service, :tags, :tests
@@ -31,6 +32,20 @@ module Model
       else
         []
       end
+    end
+    
+    def _load_tests(array)
+      array ||= []
+      data = []
+      array.each do |test|
+        data << Test.new do |t|
+          t.input = test['input']
+          t.output = test['output']
+          t.ws_security = test['ws-security']
+        end
+      end
+      
+      data
     end
   
   end
