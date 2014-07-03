@@ -1,5 +1,5 @@
 require 'test/unit'
-require File.expand_path '../../../../bin/model/test_suite.rb', __FILE__
+require File.expand_path '../../../../lib/model/test_suite.rb', __FILE__
 
 class TestTestSuite < Test::Unit::TestCase
 
