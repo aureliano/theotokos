@@ -27,6 +27,10 @@ module Model
       @success
     end
     
+    def total_tests
+      (@test_results.nil?) ? 0 : @test_results.size
+    end
+    
   end
 
 end

@@ -14,6 +14,7 @@ class TestTestSuiteResult < Test::Unit::TestCase
     
     assert_equal suite.total_failures, 7
     assert_equal suite.total_success, 24
+    assert_equal suite.total_tests, 31
   end
   
   def test_result
