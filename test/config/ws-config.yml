@@ -1,0 +1,8 @@
+request.namespaces: xmlns:soapenv=http://schemas.xmlsoap.org/soap/envelope/, xmlns:wsdl=http://interfaceSiconv.cs.siconv.mp.gov.br/
+request.env.namespace: soapenv
+ssl.verify.mode: none
+ssl.version: SSLv3
+ssl.cert.file: /path/to/cert.file
+ssl.cert.key.file: /path/to/cert/key/file
+ssl.ca.cert.file: /path/to/ca/cert/file
+ssl.cert.key.password: pass
