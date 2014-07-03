@@ -26,7 +26,7 @@ class TestTestSuiteResult < Test::Unit::TestCase
     
     suite.test_results = _prepare_data_to_error
     suite.calculate_totals
-    assert suite.success? == false
+    assert suite.error?
   end
   
   private

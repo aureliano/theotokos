@@ -1,23 +1,23 @@
 module Model
 
-  class TestSuiteResult
+  class TestAppResult
   
     def initialize
       @success = false
       yield self if block_given?
     end
     
-    attr_accessor :model, :test_results
+    attr_accessor :suites
     attr_reader :total_failures, :total_success
-  
+    
     def calculate_totals
       @total_failures = @total_success = 0
-      return if @test_results.nil?
+      return if @suites.nil?
       
-      @test_results.each do |res|
-        next if res.status.nil?
-        @total_failures += 1 if res.status.error?
-        @total_success += 1 if res.status.success?
+      @suites.each do |suite|
+        suite.calculate_totals
+        @total_failures += 1 if suite.error?
+        @total_success += 1 if suite.success?
       end
       
       @success = @total_failures == 0
@@ -31,10 +31,10 @@ module Model
       !success?
     end
     
-    def total_tests
-      (@test_results.nil?) ? 0 : @test_results.size
+    def total_suites
+      (@suites.nil?) ? 0 : @suites.size
     end
     
-  end
-
+   end
+    
 end
