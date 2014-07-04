@@ -1,2 +1,3 @@
 ---
 ws.config.path: test/config/ws-config.yml
+ws.test.models.path: test/ws-test-models

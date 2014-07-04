@@ -1,6 +1,6 @@
 require 'test/unit'
 require 'yaml'
-require File.expand_path '../../../../../lib/config/app_config_params.rb', __FILE__
+require File.expand_path '../../../../lib/config/app_config_params.rb', __FILE__
 
 class TestAppConfigParams < Test::Unit::TestCase
 
