@@ -1,0 +1,4 @@
+---
+wsdl: http://path/to/wsdl
+service: do_something
+tags: dev

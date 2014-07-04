@@ -5,6 +5,7 @@ module Model
     def initialize(opt = {})
       if block_given?
         yield self
+        _config_tags @tags
       else
         _load_properties opt
       end
@@ -25,10 +26,14 @@ module Model
       self.wsdl = opt[:wsdl]
       self.service = opt[:service]
       
-      self.tags = if opt[:tags].instance_of? String
-        opt[:tags].split(/[,\s]/).select {|t| !t.empty? }
-      elsif opt[:tags].instance_of? Array
-        opt[:tags]
+      _config_tags opt[:tags]
+    end
+    
+    def _config_tags(t)
+      self.tags = if t.instance_of? String
+        t.split(/[,\s]/).select {|t| !t.empty? }
+      elsif t.instance_of? Array
+        t
       else
         []
       end
