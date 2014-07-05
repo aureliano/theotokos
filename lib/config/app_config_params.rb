@@ -6,6 +6,13 @@ module Configuration
       params = _get_config_hash
       ENV['ws.config.path'] = params['ws.config.path'] ||= 'resources/config/ws-config.yml'
       ENV['ws.test.models.path'] = params['ws.test.models.path'] ||= 'resources/ws-test-models'
+      ENV['logger.stdout.level'] = params['logger.stdout.level']
+      ENV['logger.stdout.layout.pattern'] = params['logger.stdout.layout.pattern']
+      ENV['logger.stdout.layout.date_pattern'] = params['logger.stdout.layout.date_pattern']
+      ENV['logger.rolling_file.level'] = params['logger.rolling_file.level']
+      ENV['logger.rolling_file.file'] = params['logger.rolling_file.file']
+      ENV['logger.rolling_file.pattern'] = params['logger.rolling_file.pattern']
+      ENV['logger.rolling_file.date_pattern'] = params['logger.rolling_file.date_pattern']
     end
     
     def self._get_config_hash

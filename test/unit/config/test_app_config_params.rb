@@ -11,6 +11,13 @@ class TestAppConfigParams < Test::Unit::TestCase
     AppConfigParams.load_app_config_params
     
     assert_equal ENV['ws.config.path'], 'test/config/ws-config.yml'
+    assert_equal ENV['logger.stdout.level'], 'info'
+    assert_equal ENV['logger.stdout.layout.pattern'], '[%d] %-5l -- %c : %m\n'
+    assert_equal ENV['logger.stdout.layout.date_pattern'], '%Y-%m-%d %H:%M:%S'
+    assert_equal ENV['logger.rolling_file.level'], 'debug'
+    assert_equal ENV['logger.rolling_file.file'], 'test/log/app-test.log'
+    assert_equal ENV['logger.rolling_file.pattern'], '[%d] %-5l -- %c : %m\n'
+    assert_equal ENV['logger.rolling_file.date_pattern'], '%Y-%m-%d %H:%M:%S'
   end
   
   def test_load_default_params

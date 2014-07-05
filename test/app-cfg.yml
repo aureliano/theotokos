@@ -1,3 +1,10 @@
 ---
 ws.config.path: test/config/ws-config.yml
 ws.test.models.path: test/ws-test-models
+logger.stdout.level: info
+logger.stdout.layout.pattern: '[%d] %-5l -- %c : %m\n'
+logger.stdout.layout.date_pattern: '%Y-%m-%d %H:%M:%S'
+logger.rolling_file.level: debug
+logger.rolling_file.file: test/log/app-test.log
+logger.rolling_file.pattern: '[%d] %-5l -- %c : %m\n'
+logger.rolling_file.date_pattern: '%Y-%m-%d %H:%M:%S'
