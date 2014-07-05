@@ -1,6 +1,8 @@
 require 'yaml'
+require 'logging'
 
 require File.expand_path  '../../lib/config/app_config_params.rb', __FILE__
+require File.expand_path  '../../lib/config/logger.rb', __FILE__
 require File.expand_path '../../lib/engine/execution_initializer.rb', __FILE__
 require File.expand_path '../../lib/engine/parser.rb', __FILE__
 require File.expand_path '../../lib/model/execution.rb', __FILE__

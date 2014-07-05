@@ -1,3 +1,10 @@
 #!/usr/bin/env ruby
 
 require File.expand_path '../requires.rb', __FILE__
+
+AppConfigParams.load_app_config_params
+
+Logger.add_stdout_logger
+logger = Logger.create_logger (Theotokos = Class.new)
+
+logger.info 'Initialize WS test application...'
