@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
 
-require File.expand_path '../requires.rb', __FILE__
+require File.expand_path '../../lib/requires.rb', __FILE__
 
+init_time = Time.now
 AppConfigParams.load_app_config_params
 
 Logger.add_stdout_logger
@@ -16,3 +17,5 @@ main_executor = ExecutionInitializer.new do |e|
   e.command = Execution.new {|e| e.test_files = models }
 end
 main_executor.init_executors
+
+puts diff_time init_time, Time.now

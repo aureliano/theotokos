@@ -11,7 +11,9 @@ module Engine
       raise Exception, 'Execution command params must not be empty.' unless @command
       @command.test_files.each do |file|
         model = Parser.yaml_to_test_suite file
+        model.source = file
         SoapExecutor.new(model).execute
+        puts
       end
     end
   
