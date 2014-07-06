@@ -8,3 +8,11 @@ Logger.add_stdout_logger
 logger = Logger.create_logger (Theotokos = Class.new)
 
 logger.info 'Initialize WS test application...'
+models = ExecutionInitializer.load_test_models
+logger.debug "Got test models: #{models.join(', ')}"
+
+logger.info 'Initialize executors'
+main_executor = ExecutionInitializer.new do |e|
+  e.command = Execution.new {|e| e.test_files = models }
+end
+main_executor.init_executors

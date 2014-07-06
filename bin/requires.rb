@@ -5,6 +5,7 @@ require File.expand_path  '../../lib/config/app_config_params.rb', __FILE__
 require File.expand_path  '../../lib/config/logger.rb', __FILE__
 require File.expand_path '../../lib/engine/execution_initializer.rb', __FILE__
 require File.expand_path '../../lib/engine/parser.rb', __FILE__
+require File.expand_path '../../lib/engine/soap_executor.rb', __FILE__
 require File.expand_path '../../lib/model/execution.rb', __FILE__
 require File.expand_path '../../lib/model/test_app_result.rb', __FILE__
 require File.expand_path '../../lib/model/test.rb', __FILE__

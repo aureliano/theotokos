@@ -11,10 +11,12 @@ class TestExecutionInitializer < Test::Unit::TestCase
     assert_raise(Exception, 'Execution command params must not be empty.') { ExecutionInitializer.new.init_executors }
   end
   
-  def test_load_resources
-    init = ExecutionInitializer.new
-    
-    assert_equal init.load_resources.sort, ['test/ws-test-models/do_something.yml', 'test/ws-test-models/project1/look_for_stuff.yml'].sort
+  def test_load_test_models
+    models = [
+      'test/ws-test-models/do_something.yml',
+      'test/ws-test-models/project1/look_for_stuff.yml'
+    ].sort
+    assert_equal ExecutionInitializer.load_test_models.sort, models
   end
   
 end
