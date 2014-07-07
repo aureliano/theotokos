@@ -10,9 +10,16 @@ module Engine
     def init_executors
       raise Exception, 'Execution command params must not be empty.' unless @command
       @command.test_files.each do |file|
-        model = Parser.yaml_to_test_suite file
+        model = nil
+        begin
+          model = Parser.yaml_to_test_suite file
+        rescue Exception => ex
+          @suites[file] = ExecutionInitializer.error_test_suite_result ex
+        end
+        
         model.source = file
-        SoapExecutor.new(model).execute
+        @suites[file] = SoapExecutor.new(model).execute
+        
         puts
       end
     end
@@ -20,6 +27,24 @@ module Engine
     def self.load_test_models
       models_path = "#{ENV['ws.test.models.path']}/**/*.yml"
       Dir.glob(models_path).map {|file| file }
+    end
+    
+    def self.error_test_suite_result(ex)
+      TestSuiteResult.new do |r|
+        r.model = TestSuite.new do |s|
+          s.source = file
+          s.wsdl = '???'
+          s.service = '???'
+        end
+        
+        r.test_results = [
+          TestResult.new do |test|
+            test.name = '1'
+            test.status = TestStatus.new :test_file_status => false, :test_text_status => false
+            test.error = { :message => ex.to_s, :backtrace => ex.backtrace }
+          end
+        ]
+      end
     end
     
     attr_accessor :command
