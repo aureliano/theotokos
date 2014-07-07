@@ -16,7 +16,15 @@ module Engine
         suite.wsdl = hash['wsdl']
         suite.service = hash['service']
         suite.tags = hash['tags']
-        suite.tests = hash['tests']
+        
+        suite.tests = hash['tests'].map do |te|
+          Model::Test.new do |t|
+            t.input = te['input']
+            t.output = te['output']
+            t.ws_security = te['ws_security']
+            t.error_expected = te['error_expected']
+          end
+        end unless hash['tests'].nil?
       end
     end
   

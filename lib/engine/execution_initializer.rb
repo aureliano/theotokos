@@ -9,6 +9,8 @@ module Engine
     
     def init_executors
       raise Exception, 'Execution command params must not be empty.' unless @command
+      ws_config = WsConfig.load_ws_config
+      
       @command.test_files.each do |file|
         model = nil
         begin
@@ -18,7 +20,11 @@ module Engine
         end
         
         model.source = file
-        @suites[file] = SoapExecutor.new(model).execute
+        @suites[file] = SoapExecutor.new do |exe|
+          exe.test_suite = model
+          exe.test_index = @command.test_index
+          exe.ws_config = ws_config
+        end.execute
         
         puts
       end

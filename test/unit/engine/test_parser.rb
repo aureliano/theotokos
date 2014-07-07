@@ -1,5 +1,6 @@
 require 'test/unit'
 require File.expand_path '../../../../lib/model/test_suite.rb', __FILE__
+require File.expand_path '../../../../lib/model/test.rb', __FILE__
 require File.expand_path '../../../../lib/engine/parser.rb', __FILE__
 
 class TestParser < Test::Unit::TestCase

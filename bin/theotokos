@@ -5,8 +5,8 @@ require File.expand_path '../../lib/requires.rb', __FILE__
 init_time = Time.now
 AppConfigParams.load_app_config_params
 
-Logger.add_stdout_logger
-logger = Logger.create_logger (Theotokos = Class.new)
+AppLogger.add_stdout_logger
+logger = AppLogger.create_logger (Theotokos = Class.new)
 
 logger.info 'Initialize WS test application...'
 models = ExecutionInitializer.load_test_models

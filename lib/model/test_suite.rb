@@ -9,7 +9,7 @@ module Model
       else
         _load_properties opt
       end
-      @tests = _load_tests opt[:tests]
+      @tests ||= Array.new      
     end
     
     attr_accessor :source, :wsdl, :service, :tags, :tests
@@ -27,6 +27,7 @@ module Model
       self.service = opt[:service]
       
       _config_tags opt[:tags]
+      @tests = _load_tests opt[:tests]
     end
     
     def _config_tags(t)

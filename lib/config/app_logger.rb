@@ -1,6 +1,6 @@
 module Configuration
 
-  class Logger
+  class AppLogger
   
     @@appenders = []
   

@@ -8,9 +8,10 @@ module Model
       @input ||= {}
       @output ||= {}
       @ws_security ||= {}
+      @error_expected = false
     end
   
-    attr_accessor :input, :output, :ws_security
+    attr_accessor :input, :output, :ws_security, :error_expected, :error
   
   end
   

@@ -2,3 +2,8 @@
 wsdl: http://path/to/wsdl
 service: do_something
 tags: dev
+tests:
+
+- input:
+    arg1: 1
+    arg2: test argument
