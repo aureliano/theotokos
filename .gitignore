@@ -4,3 +4,4 @@ tmp
 rdoc
 Gemfile.lock
 app-cfg.yml
+resources/*
