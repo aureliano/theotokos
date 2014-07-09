@@ -6,6 +6,7 @@ module Configuration
       params = _get_config_hash
       ENV['ws.config.path'] = params['ws.config.path'] ||= 'resources/config/ws-config.yml'
       ENV['ws.test.models.path'] = params['ws.test.models.path'] ||= 'resources/ws-test-models'
+      ENV['ws.test.output.files.path'] = params['ws.test.output.files.path'] ||= 'resources/outputs'
       ENV['logger.stdout.level'] = params['logger.stdout.level'] ||= 'info'
       ENV['logger.stdout.layout.pattern'] = params['logger.stdout.layout.pattern'] ||= '[%d] %-5l -- %c : %m\n'
       ENV['logger.stdout.layout.date_pattern'] = params['logger.stdout.layout.date_pattern'] ||= '%Y-%m-%d %H:%M:%S'

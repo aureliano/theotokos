@@ -20,8 +20,6 @@ module Engine
       test_suite_result
     end
     
-    attr_accessor :test_suite, :test_index, :ws_config
-    
     private
     def _execute_test_suite
       res = TestSuiteResult.new do |r|
@@ -54,6 +52,15 @@ module Engine
           test_result.status = TestStatus.new :test_file_status => false, :test_text_status => false
           results << test_result
           next
+        end
+        
+        test_result.test_actual = super.save_web_service_result
+        test_res = super.validade_test_execution test.output, test_result.test_actual
+        if test_res.instance_of? Exception
+          test_result.error = { :message => ex.to_s, :backtrace => ex.backtrace }
+          test_result.status = TestStatus.new :error => true
+        else
+          test_result.status = test_res
         end
         
         results << test_result

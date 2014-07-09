@@ -12,9 +12,9 @@ class TestTestSuiteResult < Test::Unit::TestCase
     
     suite.calculate_totals
     
-    assert_equal suite.total_failures, 7
-    assert_equal suite.total_success, 24
-    assert_equal suite.total_tests, 31
+    assert_equal 7, suite.total_failures
+    assert_equal 24, suite.total_success
+    assert_equal 31, suite.total_tests
   end
   
   def test_result

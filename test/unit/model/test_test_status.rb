@@ -14,6 +14,14 @@ class TestTestStatus < Test::Unit::TestCase
     status = TestStatus.new :test_file_status => true, :test_text_status => true
     assert status.success?
     
+    status.error = false
+    assert status.success?
+    assert !status.error?
+    
+    status.error = true
+    assert !status.success?
+    assert status.error?
+    
     status.test_file_status = false
     assert status.success? == false
     

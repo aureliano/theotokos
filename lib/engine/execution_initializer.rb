@@ -28,6 +28,7 @@ module Engine
         
         puts
       end
+      puts @suites
     end
   
     def self.load_test_models
