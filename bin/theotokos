@@ -16,6 +16,6 @@ logger.info 'Initialize executors'
 main_executor = ExecutionInitializer.new do |e|
   e.command = Execution.new {|e| e.test_files = models }
 end
-main_executor.init_executors
+app_result = main_executor.init_executors
 
 puts diff_time init_time, Time.now

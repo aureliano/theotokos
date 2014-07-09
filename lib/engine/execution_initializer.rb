@@ -3,13 +3,13 @@ module Engine
   class ExecutionInitializer
   
     def initialize
-      @suites = Hash.new      
       yield self if block_given?
     end
     
     def init_executors
       raise Exception, 'Execution command params must not be empty.' unless @command
       ws_config = WsConfig.load_ws_config
+      suites = []
       
       @command.test_files.each do |file|
         model = nil
@@ -20,7 +20,7 @@ module Engine
         end
         
         model.source = file
-        @suites[file] = SoapExecutor.new do |exe|
+        suites << SoapExecutor.new do |exe|
           exe.test_suite = model
           exe.test_index = @command.test_index
           exe.ws_config = ws_config
@@ -28,8 +28,10 @@ module Engine
         
         puts
       end
-      @suites['resources/ws-test-models/consultar_convenios_orgao_por_ano.yml'].test_results.each do |r|
-        puts r.status.success?
+      
+      @test_app_result = TestAppResult.new do |t|
+        t.suites = suites
+        t.calculate_totals
       end
     end
   
@@ -57,7 +59,7 @@ module Engine
     end
     
     attr_accessor :command
-    attr_reader :suites
+    attr_reader :test_app_result
   
   end
 
