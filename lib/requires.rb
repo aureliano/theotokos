@@ -1,7 +1,9 @@
 require 'yaml'
 require 'logging'
 require 'savon'
+require 'equivalent-xml'
 
+require File.expand_path  '../../lib/assertion/test_assertion.rb', __FILE__
 require File.expand_path  '../../lib/config/app_config_params.rb', __FILE__
 require File.expand_path  '../../lib/config/app_logger.rb', __FILE__
 require File.expand_path  '../../lib/helper/app_helper.rb', __FILE__
@@ -25,3 +27,4 @@ include Configuration
 include Engine
 include Helper
 include Net
+include Assertion

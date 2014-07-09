@@ -21,7 +21,7 @@ module Engine
           Model::Test.new do |t|
             t.input = te['input']
             t.output = te['output']
-            t.ws_security = te['ws_security']
+            t.ws_security = te['ws-security']
             t.error_expected = te['error_expected']
           end
         end unless hash['tests'].nil?

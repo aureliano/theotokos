@@ -42,22 +42,25 @@ module Engine
         test_result.name = @count
         test_result.error_expected = test.error_expected
         
-        res = SoapNet.send_request :wsdl => @test_suite.wsdl, :ws_config => @ws_config, :ws_security => test.ws_security, :service => @test_suite.service
+        res = SoapNet.send_request :wsdl => @test_suite.wsdl, :ws_config => @ws_config,
+          :ws_security => test.ws_security, :service => @test_suite.service, :params => test.input
         
         if res[:success] == false && !test_result.error_expected
+          test_result.error = { :message => 'Send request failure', :backtrace => res[:xml] }
+          test_result.status = TestStatus.new :error => true
           results << test_result
           next
         elsif res[:success] == true && test_result.error_expected
           test_result.error = { :message => 'It was supposed to get an exception but nothing was caught.' }
-          test_result.status = TestStatus.new :test_file_status => false, :test_text_status => false
+          test_result.status = TestStatus.new :error => true
           results << test_result
           next
         end
         
-        test_result.test_actual = super.save_web_service_result
-        test_res = super.validade_test_execution test.output, test_result.test_actual
+        test_result.test_actual = save_web_service_result res[:xml]
+        test_res = validate_test_execution test.output, test_result.test_actual
         if test_res.instance_of? Exception
-          test_result.error = { :message => ex.to_s, :backtrace => ex.backtrace }
+          test_result.error = { :message => test_res.to_s, :backtrace => test_res.backtrace }
           test_result.status = TestStatus.new :error => true
         else
           test_result.status = test_res

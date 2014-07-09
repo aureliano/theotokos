@@ -12,7 +12,7 @@ class TestWsConfig < Test::Unit::TestCase
     _prepare_test
     
     conf = WsConfig.load_ws_config
-    assert_equal conf.namespaces, 'xmlns:soapenv=http://schemas.xmlsoap.org/soap/envelope/, xmlns:wsdl=http://interfaceSiconv.cs.siconv.mp.gov.br/'
+    assert_equal conf.namespaces, { 'xmlns:soapenv' => 'http://schemas.xmlsoap.org/soap/envelope/', 'xmlns:wsdl' => 'http://interfaceSiconv.cs.siconv.mp.gov.br/' }
     assert_equal conf.env_namespace, 'soapenv'
     assert_equal conf.ssl_verify_mode, :none
     assert_equal conf.ssl_version, :SSLv3

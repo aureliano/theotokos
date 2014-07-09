@@ -28,7 +28,9 @@ module Engine
         
         puts
       end
-      puts @suites
+      @suites['resources/ws-test-models/consultar_convenios_orgao_por_ano.yml'].test_results.each do |r|
+        puts r.status.success?
+      end
     end
   
     def self.load_test_models

@@ -34,6 +34,10 @@ module Model
       ok.nil? ? nil : !ok
     end
     
+    def to_s
+      "Model::TestStatus @error: #{@error}, @test_file_status: #{@test_file_status}, @test_text_status: #{@test_text_status}"
+    end
+    
     private
     def _load_properties(opt)
       @test_file_status = opt[:test_file_status]

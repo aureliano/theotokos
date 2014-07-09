@@ -17,9 +17,9 @@ module Net
         xml = Nokogiri::XML::Builder.new do |xml|
           xml.error do
             xml.message ex.to_s
-            xml.backtrace ex.backtrace
+            xml.backtrace ex.backtrace.join("\n    ")
           end
-        end
+        end.to_xml
         success = false
       end
       

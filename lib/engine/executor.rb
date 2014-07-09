@@ -5,9 +5,9 @@ module Engine
     attr_accessor :test_suite, :test_index, :ws_config
     
     protected
-    def save_web_service_result
-      Dir.mkdir 'tmpt' unless File.exist? 'tmp'
-      file_name = "tmp/#{@test_suite.source}_#{@count}.xml"
+    def save_web_service_result(data)
+      Dir.mkdir 'tmp' unless File.exist? 'tmp'
+      file_name = "tmp/#{@test_suite.source.sub(ENV['ws.test.models.path'] + '/', '')}_#{@count}.xml"
       @logger.info "Web service response saved to #{file_name}"
     
       File.open(file_name, 'w') {|file| file.write data }
@@ -21,7 +21,11 @@ module Engine
         res = {}
         
         if expected_output['file']
-          file = "#{ENV['ws.test.output.files.path']}/#{expected_output['file']}"
+          file = if expected_output['file'].start_with?(ENV['ws.test.output.files.path'])
+             expected_output['file']
+          else
+            "#{ENV['ws.test.output.files.path']}/#{expected_output['file']}"
+          end
           res[:file] = TestAssertion.compare_file file, outcoming_file
         end
         
@@ -37,13 +41,10 @@ module Engine
           res[:text] = TestAssertion.compare_text expected_output['text'], File.read(outcoming_file), assertion
         end
         
-        file_passed = ((res[:file].nil?) ? true : res[:file])
-        text_passed = ((res[:text].nil?) ? true : res[:text])
-        
-        return TestStatus.new :test_file_status => file_passed, :test_text_status => text_passed
+        return TestStatus.new :test_file_status => res[:file], :test_text_status => res[:text]
       rescue Exception => ex
         stack = ex.backtrace.join "\n"
-        @logger.warn "Test validation has failed for test #{@count}: #{ex.to_s}\n#{stack}"
+        @logger.warn "Test validation has failed for test ##{@count}: #{ex.to_s}\n#{stack}"
         
         return ex
       end
