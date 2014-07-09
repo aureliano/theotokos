@@ -4,11 +4,12 @@ module Model
   
     def initialize
       @success = false
+      @broken_suites = []
       yield self if block_given?
     end
     
     attr_accessor :suites
-    attr_reader :total_failures, :total_success
+    attr_reader :total_failures, :total_success, :broken_suites
     
     def calculate_totals
       @total_failures = @total_success = 0
@@ -16,7 +17,10 @@ module Model
       
       @suites.each do |suite|
         suite.calculate_totals
-        @total_failures += 1 if suite.error?
+        if suite.error?
+          @total_failures += 1
+          @broken_suites << suite
+        end
         @total_success += 1 if suite.success?
       end
       

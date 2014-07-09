@@ -4,11 +4,12 @@ module Model
   
     def initialize
       @success = false
+      @broken_tests = []
       yield self if block_given?
     end
     
     attr_accessor :model, :test_results
-    attr_reader :total_failures, :total_success
+    attr_reader :total_failures, :total_success, :broken_tests
   
     def calculate_totals
       @total_failures = @total_success = 0
@@ -16,7 +17,10 @@ module Model
       
       @test_results.each do |res|
         next if res.status.nil?
-        @total_failures += 1 if res.status.error?
+        if res.status.error?
+          @total_failures += 1
+          @broken_tests << res
+        end
         @total_success += 1 if res.status.success?
       end
       
