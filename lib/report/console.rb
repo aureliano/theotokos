@@ -73,7 +73,7 @@ module Report
     def _append(text)
       @output << "\n" unless @output.empty?
       @output << text
-      puts text unless ENV['environment'] == 'test'
+      puts text unless ENV['ENVIRONMENT'] == 'test'
     end
   
   end

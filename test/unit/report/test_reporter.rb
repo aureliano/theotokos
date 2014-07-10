@@ -21,12 +21,5 @@ class TestReporter < Test::Unit::TestCase
     assert_instance_of Html, Reporter.create_reporter('html')
   end
   
-  def test_print_report  
-    assert_raise(Exception, "Not supported operation for #{Console.class.name}") { Reporter.create_reporter(:console).print_report }
-    assert_raise(Exception, "Not supported operation for #{Console.class.name}") { Reporter.create_reporter.print_report }
-    assert_nothing_raised(Exception) { Reporter.create_reporter(:json).print_report }
-    assert_nothing_raised(Exception) { Reporter.create_reporter(:html).print_report }
-  end
-  
 end
 

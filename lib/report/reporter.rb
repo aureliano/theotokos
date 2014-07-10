@@ -17,7 +17,7 @@ module Report
     
     attr_accessor :data
     
-    def print_report
+    def print
       raise Exception, 'Not supported operation for ' + self.class.name
     end
   
