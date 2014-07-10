@@ -38,6 +38,12 @@ module Model
       "Model::TestStatus @error: #{@error}, @test_file_status: #{@test_file_status}, @test_text_status: #{@test_text_status}"
     end
     
+    def to_hash
+      Hash.new({
+        :test_file_status => @test_file_status, :test_text_status => @test_text_status, :error => @error
+      })
+    end
+    
     private
     def _load_properties(opt)
       @test_file_status = opt[:test_file_status]

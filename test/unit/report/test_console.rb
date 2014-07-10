@@ -4,7 +4,7 @@ require File.expand_path '../../../../lib/report/reporter.rb', __FILE__
 require File.expand_path '../../../../lib/report/console.rb', __FILE__
 require File.expand_path '../../../../lib/model/test_result.rb', __FILE__
 
-class TestReporter < Test::Unit::TestCase
+class TestConsole < Test::Unit::TestCase
 
   include Report
   include Model
@@ -89,7 +89,7 @@ class TestReporter < Test::Unit::TestCase
         ]
       end
       a.calculate_totals
-    end      
+    end
     
     expected = "*" * 100
     expected << "\nTotal test suites success: #{app.total_success}"

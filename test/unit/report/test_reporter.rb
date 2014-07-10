@@ -21,5 +21,12 @@ class TestReporter < Test::Unit::TestCase
     assert_instance_of Html, Reporter.create_reporter('html')
   end
   
+  def test_print_report  
+    assert_nothing_raised(Exception) { Reporter.create_reporter(:console).print nil }
+    assert_nothing_raised(Exception) { Reporter.create_reporter.print nil }
+    assert_nothing_raised(Exception) { Reporter.create_reporter(:json).print nil }
+    assert_nothing_raised(Exception) { Reporter.create_reporter(:html).print }
+  end
+  
 end
 

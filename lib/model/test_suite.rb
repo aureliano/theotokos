@@ -20,6 +20,13 @@ module Model
       raise Exception, 'Service name (service to be tested) must be provided.' if @service.nil? || @service.empty?
     end
     
+    def to_hash
+      Hash.new({
+        :source => @source, :wsdl => @wsdl, :service => @service, :tags => @tags,
+        :tests => @test.map {|t| t.to_hash }
+      })
+    end
+    
     private
     def _load_properties(opt)
       self.source = opt[:source]
