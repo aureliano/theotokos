@@ -10,11 +10,9 @@ module Model
     attr_accessor :name, :status, :error, :test_expectation, :test_actual, :error_expected, :filter
   
     def to_hash
-      Hash.new({
-        :name => @name, :status => @status.to_hash, :error => @error,
+      { :name => @name, :status => ((@status) ? @status.to_hash : @status), :error => @error,
         :test_expectation => @test_expectation, :test_actual => @test_actual,
-        :error_expected => @error_expected, :filter => @filter.to_hash
-      })
+        :error_expected => @error_expected, :filter => ((@filter) ? @filter.to_hash : @filter) }
     end
     
   end

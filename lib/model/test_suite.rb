@@ -21,10 +21,8 @@ module Model
     end
     
     def to_hash
-      Hash.new({
-        :source => @source, :wsdl => @wsdl, :service => @service, :tags => @tags,
-        :tests => @test.map {|t| t.to_hash }
-      })
+      { :source => @source, :wsdl => @wsdl, :service => @service, :tags => @tags,
+        :tests => ((@tests) ? @tests.map {|t| t.to_hash } : @tests) }
     end
     
     private

@@ -39,6 +39,13 @@ module Model
       (@test_results.nil?) ? 0 : @test_results.size
     end
     
+    def to_hash
+      { :model => ((@model) ? @model.to_hash : @model),
+      :test_results => ((@test_results) ? @test_results.map {|t| t.to_hash } : @test_results),
+      :total_failures => @total_failures, :total_success => @total_success,
+      :broken_tests => @broken_tests }
+    end
+    
   end
 
 end

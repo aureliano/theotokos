@@ -39,9 +39,8 @@ module Model
     end
     
     def to_hash
-      Hash.new({
-        :test_file_status => @test_file_status, :test_text_status => @test_text_status, :error => @error
-      })
+      { :test_file_status => @test_file_status, :test_text_status => @test_text_status,
+        :error => @error }
     end
     
     private

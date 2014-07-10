@@ -40,10 +40,9 @@ module Model
     end
     
     def to_hash
-      Hash.new({
-        :total_failures => @total_failures, :total_success => @total_success,
-        :broken_suites => @broken_suites, :suites => @suites.map {|s| s.to_hash }
-      })
+      { :total_failures => @total_failures, :total_success => @total_success,
+        :broken_suites => ((@broken_suites) ? @broken_suites.map {|s| s.to_hash } : @broken_suites),
+        :suites => ((@suites) ? @suites.map {|s| s.to_hash } : @suites) }
     end
     
    end

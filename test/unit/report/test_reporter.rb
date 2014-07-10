@@ -25,7 +25,7 @@ class TestReporter < Test::Unit::TestCase
     assert_nothing_raised(Exception) { Reporter.create_reporter(:console).print nil }
     assert_nothing_raised(Exception) { Reporter.create_reporter.print nil }
     assert_nothing_raised(Exception) { Reporter.create_reporter(:json).print nil }
-    assert_nothing_raised(Exception) { Reporter.create_reporter(:html).print }
+    assert_nothing_raised(Exception) { Reporter.create_reporter(:html).print nil }
   end
   
 end
