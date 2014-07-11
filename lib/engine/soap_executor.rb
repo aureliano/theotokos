@@ -9,7 +9,7 @@ module Engine
     end
     
     def execute
-      @logger.info "Executa Soap Test '#{@test_suite.source}'"
+      @logger.info "Execute Soap Test '#{@test_suite.source}'"
       @logger.info "WSDL: #{@test_suite.wsdl}"
       @logger.info "Service: #{@test_suite.service}"
       
@@ -57,16 +57,18 @@ module Engine
           next
         end
         
+        test_result.test_expectation = test.output
         test_result.test_actual = save_web_service_result res[:xml]
         test_res = validate_test_execution test.output, test_result.test_actual
-        if test_res.instance_of? Exception
+        if test_res.instance_of? Model::TestStatus
+          test_result.status = test_res
+        else
           test_result.error = { :message => test_res.to_s, :backtrace => test_res.backtrace }
           test_result.status = TestStatus.new :error => true
-        else
-          test_result.status = test_res
         end
         
         results << test_result
+        @console_report.print test_result unless @console_report.nil?
       end
       
       results

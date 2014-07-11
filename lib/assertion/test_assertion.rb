@@ -3,18 +3,18 @@ module Assertion
   class TestAssertion
   
     def self.compare_file(expected, actual)
-    raise Exception, "File #{expected} does not exist" unless File.exist? expected
-    raise Exception, "File #{actual} does not exist" unless File.exist? actual
-    
-    TestAssertion.compare_text File.read(expected), File.read(actual), :equals
-  end
+      raise Exception, "File #{expected} does not exist" unless File.exist? expected
+      raise Exception, "File #{actual} does not exist" unless File.exist? actual
+      
+      TestAssertion.compare_text File.read(expected), File.read(actual), :equals
+    end
   
     def self.compare_text(expected, actual, assertion = :equals)
       case assertion
-        when :equals then TestAssertion.assert_equals expected, actual
-        when :contains then TestAssertion.assert_contains expected, actual
-        when :not_contains then TestAssertion.assert_not_contains expected, actual
-        when :regex then TestAssertion.assert_match expected, actual
+        when :equals then TestAssertion.assert_equals expected[assertion.to_s], actual
+        when :contains then TestAssertion.assert_contains expected[assertion.to_s], actual
+        when :not_contains then TestAssertion.assert_not_contains expected[assertion.to_s], actual
+        when :regex then TestAssertion.assert_match expected[assertion.to_s], actual
         else nil
       end
     end

@@ -17,7 +17,7 @@ module Report
       _append "Test case: ##{test.name}"
       _append "Test expectations."
       
-      if test.test_expectation
+      if test.test_expectation# && test.error.nil?
         if test.test_expectation['file']
           file = test.test_expectation['file']
           _append " => File '#{file}'\n#{File.read(file)}"
@@ -31,8 +31,9 @@ module Report
       end
       
       if test.error
+        backtrace = test.error[:backtrace].join("\n")
         _append "\n - Error message: #{test.error[:message]}"
-        _append "\n - Error detail:\n => #{test.error[:backtrace]}"
+        _append "\n - Error detail:\n#{backtrace}"
       else
         _append "\n- Found output."
         _append (test.test_actual) ? File.read(test.test_actual) : ''

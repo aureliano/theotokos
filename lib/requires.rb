@@ -1,4 +1,5 @@
 require 'yaml'
+require 'json'
 require 'logging'
 require 'savon'
 require 'equivalent-xml'
@@ -21,6 +22,10 @@ require File.expand_path '../../lib/model/test_suite_result.rb', __FILE__
 require File.expand_path '../../lib/model/text_operator.rb', __FILE__
 require File.expand_path '../../lib/model/ws_config.rb', __FILE__
 require File.expand_path '../../lib/net/soap_net.rb', __FILE__
+require File.expand_path '../../lib/report/reporter.rb', __FILE__
+require File.expand_path '../../lib/report/console.rb', __FILE__
+require File.expand_path '../../lib/report/html.rb', __FILE__
+require File.expand_path '../../lib/report/json.rb', __FILE__
 
 include Model
 include Configuration
@@ -28,3 +33,4 @@ include Engine
 include Helper
 include Net
 include Assertion
+include Report

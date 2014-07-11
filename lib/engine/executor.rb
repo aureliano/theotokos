@@ -2,7 +2,7 @@ module Engine
 
   class Executor
     
-    attr_accessor :test_suite, :test_index, :ws_config
+    attr_accessor :test_suite, :test_index, :ws_config, :console_report
     
     protected
     def save_web_service_result(data)
@@ -30,15 +30,10 @@ module Engine
         end
         
         if expected_output['text']
-          assertion = case output['text']
-            when 'equals' then :equals
-            when 'contains' then :contains
-            when 'not_contains' then :not_contains
-            when 'regex' then :regex
-            else nil
+          assertions = _get_assertions expected_output['text']
+          assertions.each do |assertion|
+            res[:text] = TestAssertion.compare_text expected_output['text'], File.read(outcoming_file), assertion
           end
-          
-          res[:text] = TestAssertion.compare_text expected_output['text'], File.read(outcoming_file), assertion
         end
         
         return TestStatus.new :test_file_status => res[:file], :test_text_status => res[:text]
@@ -51,13 +46,30 @@ module Engine
     end
     
     def before(&block)
-      @logger.info 'Playing Before Test'
+      @logger.debug 'Playing Before Test'
       block.call if block_given?
     end
     
     def after(&block)
-      @logger.info 'Playing After Test'
+      @logger.debug 'Playing After Test'
       block.call if block_given?
+    end
+    
+    private
+    def _get_assertions(hash)
+      assertions = []
+      ['equals', 'contains', 'not_contains', 'regex'].each do |assertion|
+        next if hash[assertion].nil?
+        
+        assertions << case assertion
+          when 'equals' then :equals
+          when 'contains' then :contains
+          when 'not_contains' then :not_contains
+          when 'regex' then :regex
+        end
+      end
+      
+      assertions
     end
   
   end
