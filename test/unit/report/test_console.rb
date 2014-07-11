@@ -13,14 +13,14 @@ class TestConsole < Test::Unit::TestCase
     test = TestResult.new do |t|
       t.name = '1'
       t.test_expectation = { 'file' => 'test/ws-test-models/do_something.yml', 'text' => { :equals => 'test 123'} }
-      t.status = TestStatus.new :test_file_status => true, :test_text_status => true
+      t.status = TestStatus.new :test_file_status => true, :test_text_status => { :equals => true }
       t.test_actual = 'test/ws-test-models/do_something.yml'
     end
     
     expected = "Test case: #1\nTest expectations.\n => File 'test/ws-test-models/do_something.yml'\n"
     expected << File.read('test/ws-test-models/do_something.yml')
     expected << "\n => Status: Passed\n\n"
-    expected << " => Text\n{:equals=>\"test 123\"}\n => Status: Passed\n"
+    expected << " => Text\n\nequals: test 123\nStatus: Passed\n"
     expected << "\n- Found output.\n"
     expected << File.read('test/ws-test-models/do_something.yml')
     expected << "\n\n- Test case status: Success"
@@ -34,14 +34,14 @@ class TestConsole < Test::Unit::TestCase
     test = TestResult.new do |t|
       t.name = '1'
       t.test_expectation = { 'file' => 'test/ws-test-models/do_something.yml', 'text' => { :equals => 'test 123'} }
-      t.status = TestStatus.new :test_file_status => false, :test_text_status => true
+      t.status = TestStatus.new :test_file_status => false, :test_text_status => { :equals => true }
       t.test_actual = 'test/ws-test-models/project1/look_for_stuff.yml'
     end
     
     expected = "Test case: #1\nTest expectations.\n => File 'test/ws-test-models/do_something.yml'\n"
     expected << File.read('test/ws-test-models/do_something.yml')
     expected << "\n => Status: Failed\n\n"
-    expected << " => Text\n{:equals=>\"test 123\"}\n => Status: Passed\n"
+    expected << " => Text\n\nequals: test 123\nStatus: Passed\n"
     expected << "\n- Found output.\n"
     expected << File.read('test/ws-test-models/project1/look_for_stuff.yml')
     expected << "\n\n- Test case status: Fail"
@@ -55,8 +55,8 @@ class TestConsole < Test::Unit::TestCase
     suite = TestSuiteResult.new do |s|
       s.test_results = [
         TestResult.new {|t| t.status = TestStatus.new :test_file_status => true },
-        TestResult.new {|t| t.status = TestStatus.new :test_text_status => true },
-        TestResult.new {|t| t.status = TestStatus.new :test_text_status => false }
+        TestResult.new {|t| t.status = TestStatus.new :test_text_status => { :equals => true } },
+        TestResult.new {|t| t.status = TestStatus.new :test_text_status => { :equals => false } }
       ]
       s.calculate_totals
     end
@@ -76,8 +76,8 @@ class TestConsole < Test::Unit::TestCase
         s.model = TestSuite.new {|t| t.source = '/path/to/test/model1' }
         s.test_results = [
           TestResult.new {|t| t.status = TestStatus.new :test_file_status => true },
-          TestResult.new {|t| t.status = TestStatus.new :test_text_status => true },
-          TestResult.new {|t| t.name = 1; t.status = TestStatus.new :test_text_status => false }
+          TestResult.new {|t| t.status = TestStatus.new :test_text_status => { :equals => true } },
+          TestResult.new {|t| t.name = 1; t.status = TestStatus.new :test_text_status => { :equals => false } }
         ]
       end
       
@@ -85,7 +85,7 @@ class TestConsole < Test::Unit::TestCase
         s.model = TestSuite.new {|t| t.source = '/path/to/test/model2' }
         s.test_results = [
           TestResult.new {|t| t.status = TestStatus.new :test_file_status => true },
-          TestResult.new {|t| t.status = TestStatus.new :test_text_status => true }
+          TestResult.new {|t| t.status = TestStatus.new :test_text_status => { :equals => true } }
         ]
       end
       a.calculate_totals

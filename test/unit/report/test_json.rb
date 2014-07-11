@@ -17,8 +17,8 @@ class TestJson < Test::Unit::TestCase
         s.model = TestSuite.new {|t| t.source = '/path/to/test/model1' }
         s.test_results = [
           TestResult.new {|t| t.status = TestStatus.new :test_file_status => true },
-          TestResult.new {|t| t.status = TestStatus.new :test_text_status => true },
-          TestResult.new {|t| t.name = 1; t.status = TestStatus.new :test_text_status => false }
+          TestResult.new {|t| t.status = TestStatus.new :test_text_status => { :equals => true } },
+          TestResult.new {|t| t.name = 1; t.status = TestStatus.new :test_text_status => { :equals => false } }
         ]
       end
       
@@ -26,7 +26,7 @@ class TestJson < Test::Unit::TestCase
         s.model = TestSuite.new {|t| t.source = '/path/to/test/model2' }
         s.test_results = [
           TestResult.new {|t| t.status = TestStatus.new :test_file_status => true },
-          TestResult.new {|t| t.status = TestStatus.new :test_text_status => true }
+          TestResult.new {|t| t.status = TestStatus.new :test_text_status => { :equals => true } }
         ]
       end
       a.calculate_totals

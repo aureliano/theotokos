@@ -11,7 +11,7 @@ class TestTestStatus < Test::Unit::TestCase
   end
   
   def test_success
-    status = TestStatus.new :test_file_status => true, :test_text_status => true
+    status = TestStatus.new :test_file_status => true, :test_text_status => { :equals => true }
     assert status.success?
     
     status.error = false
@@ -33,13 +33,13 @@ class TestTestStatus < Test::Unit::TestCase
   end
   
   def test_error
-    status = TestStatus.new :test_file_status => false, :test_text_status => false
+    status = TestStatus.new :test_file_status => false, :test_text_status => { :equals => false }
     assert status.error?
     
     status.test_file_status = true
     assert status.error?
     
-    status.test_text_status = true
+    status.test_text_status = { :equals => true }
     assert status.error? == false
   end
   

@@ -19,7 +19,7 @@ module Model
       if (@test_file_status.nil? && @test_text_status.nil?)
         nil
       elsif (@test_file_status == true)
-        (@test_text_status == true || @test_text_status.nil?)
+        (@test_text_status.nil? || _validate_test_text_status == true)
       elsif (_validate_test_text_status == true)
         (@test_file_status == true || @test_file_status.nil?)
       else

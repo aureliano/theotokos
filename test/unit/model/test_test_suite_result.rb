@@ -39,19 +39,19 @@ class TestTestSuiteResult < Test::Unit::TestCase
     
     14.times.map do
       res << TestResult.new do |t|
-        t.status = TestStatus.new :test_text_status => true
+        t.status = TestStatus.new :test_text_status => { :equals => true }
       end
     end
     
     5.times.map do
       res << TestResult.new do |t|
-        t.status = TestStatus.new :test_file_status => false
+        t.status = TestStatus.new :test_file_status => { :equals => false }
       end
     end
     
     2.times.map do
       res << TestResult.new do |t|
-        t.status = TestStatus.new :test_text_status => false
+        t.status = TestStatus.new :test_text_status => { :equals => false }
       end
     end
     
