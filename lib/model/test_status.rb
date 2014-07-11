@@ -20,7 +20,7 @@ module Model
         nil
       elsif (@test_file_status == true)
         (@test_text_status == true || @test_text_status.nil?)
-      elsif (@test_text_status == true)
+      elsif (_validate_test_text_status == true)
         (@test_file_status == true || @test_file_status.nil?)
       else
         false
@@ -48,6 +48,17 @@ module Model
       @test_file_status = opt[:test_file_status]
       @test_text_status = opt[:test_text_status]
       @error = opt[:error]
+    end
+    
+    def _validate_test_text_status
+      ok = false
+      return ok if @test_text_status.nil?
+      
+      @test_text_status.each_value do |v|
+        ok = v
+        break if ok == false
+      end
+      ok
     end
   
   end

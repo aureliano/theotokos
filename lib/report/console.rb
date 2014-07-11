@@ -17,16 +17,22 @@ module Report
       _append "Test case: ##{test.name}"
       _append "Test expectations."
       
-      if test.test_expectation# && test.error.nil?
+      if test.test_expectation
         if test.test_expectation['file']
           file = test.test_expectation['file']
           _append " => File '#{file}'\n#{File.read(file)}"
           _append " => Status: #{test.status.test_file_status ? 'Passed' : 'Failed'}\n"
         end
-                  
+        puts
         if test.test_expectation['text']
-          _append " => Text\n#{test.test_expectation['text']}"
-          _append " => Status: #{(test.status.test_text_status) ? 'Passed' : 'Failed'}"
+          exp = test.test_expectation['text']
+          _append " => Text\n"
+
+          exp.each do |k, v|
+            _append "#{k}: #{v}"
+            status = test.status.test_text_status[k.to_sym]
+            _append "Status: #{status ? 'Passed' : 'Failed'}"
+          end
         end          
       end
       
@@ -64,7 +70,7 @@ module Report
         _append "*" * 100
         _append "- Broken tests"
         app.broken_suites.each do |suite|
-          _append "Test suite: #{suite.model.source}\nTest cases: ##{suite.broken_tests.map {|t| t.name }.join(', ')}"
+          _append "Test suite: #{suite.model.source}\nTest cases: ##{suite.broken_tests.map {|t| t.name }.join(', #')}"
         end
       end
       

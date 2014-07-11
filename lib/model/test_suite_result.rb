@@ -13,6 +13,7 @@ module Model
   
     def calculate_totals
       @total_failures = @total_success = 0
+      @broken_tests.clear
       return if @test_results.nil?
       
       @test_results.each do |res|

@@ -11,17 +11,17 @@ module Assertion
   
     def self.compare_text(expected, actual, assertion = :equals)
       case assertion
-        when :equals then TestAssertion.assert_equals expected[assertion.to_s], actual
-        when :contains then TestAssertion.assert_contains expected[assertion.to_s], actual
-        when :not_contains then TestAssertion.assert_not_contains expected[assertion.to_s], actual
-        when :regex then TestAssertion.assert_match expected[assertion.to_s], actual
+        when :equals then TestAssertion.assert_equals expected, actual
+        when :contains then TestAssertion.assert_contains expected, actual
+        when :not_contains then TestAssertion.assert_not_contains expected, actual
+        when :regex then TestAssertion.assert_match expected, actual
         else nil
       end
     end
     
     def self.assert_equals(expected, actual)
       opts = { :element_order => false, :normalize_whitespace => true }
-      EquivalentXml.equivalent?(actual, expected, opts)
+      EquivalentXml.equivalent?(expected, actual, opts)
     end
     
     def self.assert_contains(expected, actual)
