@@ -7,7 +7,7 @@ module Model
       yield self if block_given?
     end
     
-    attr_accessor :test_files, :test_index, :report_formats, :tags
+    attr_accessor :test_files, :test_index, :report_formats, :tags, :execution_path
   
   end
 

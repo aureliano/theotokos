@@ -43,9 +43,20 @@ module Engine
       console_report.print @test_app_result unless console_report.nil?
     end
   
-    def self.load_test_models
-      models_path = "#{ENV['ws.test.models.path']}/**/*.yml"
-      Dir.glob(models_path).map {|file| file }
+    def self.load_test_models(path)
+      ((path.nil?) ? ExecutionInitializer.load_all_test_models : ExecutionInitializer.load_test_models_by_path(path))
+    end
+    
+    def self.load_test_models_by_path(model_path)
+      path = model_path.dup
+      path << '/' unless path.end_with? '/'
+      path << '**/*.yml' unless path.end_with? '.yml'
+      
+      Dir.glob(path).map {|file| file }
+    end
+    
+    def self.load_all_test_models
+      ExecutionInitializer.load_test_models_by_path ENV['ws.test.models.path']
     end
     
     def self.error_test_suite_result(ex)
