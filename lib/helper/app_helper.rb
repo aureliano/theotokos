@@ -1,5 +1,54 @@
 module Helper
 
+  def parse_cmd_options
+    command = Execution.new
+    
+    opts = OptionParser.new do |opts|
+      opts.banner = "Theotokos: a tool for web service testing"
+      opts.define_head "Usage: theotokos [path:test_index] [options]"
+      opts.separator ""
+      opts.separator "Examples:"
+      opts.separator " theotokos"
+      opts.separator " theotokos resources/ws-test-model/project_xpto"
+      opts.separator " theotokos resources/ws-test-model/project_xpto/web_service_test.yml"
+      opts.separator " theotokos resources/ws-test-model/project_xpto/web_service_test.yml:1"
+      opts.separator " theotokos -r console html json -t foo"
+      opts.separator ""
+      opts.separator "Options:"
+
+      opts.on('-t', "--tags t1,t2,t3", Array, 'Specify test tags') do |tags|
+        command.tags = tags
+      end
+
+      opts.on("-r", "--report-formats r1,r2,r3", Array, "Output test report formats. Must be one of [console, html, json]") do |formats|
+        params = []
+        formats.each do |f|
+          raise "Supported report formats are: [console, html, json]. Found '#{f}' in [#{formats.join(', ')}]" unless ['console', 'html', 'json'].include? f
+          params << f.to_sym
+        end
+        command.report_formats = params
+      end
+
+      opts.on_tail("-h", "--help", "Show this message") do
+        puts opts
+        exit
+      end
+
+      opts.on_tail("-v", "--version", "Show version") do
+        puts '0.0.1'
+        exit
+      end
+    end
+    
+    begin
+      opts.parse!
+      command
+    rescue Exception => ex
+      puts " - Error: #{ex}"
+      exit -1
+    end
+  end
+
   def diff_time(inicio, fim)
     diferenca = (fim - inicio)
     s = (diferenca % 60).to_i

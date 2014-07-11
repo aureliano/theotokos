@@ -34,7 +34,7 @@ module Engine
           assertions = _get_assertions expected_output['text']
           
           assertions.each do |assertion|
-            res[:text][assertion] = TestAssertion.compare_text expected_output['text'][assertion], File.read(outcoming_file), assertion
+            res[:text][assertion] = TestAssertion.compare_text expected_output['text'][assertion.to_s], File.read(outcoming_file), assertion
           end
         end
         

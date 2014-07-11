@@ -2,6 +2,8 @@
 
 require File.expand_path '../../lib/requires.rb', __FILE__
 
+command = parse_cmd_options
+
 init_time = Time.now
 AppConfigParams.load_app_config_params
 
@@ -9,12 +11,12 @@ AppLogger.add_stdout_logger
 logger = AppLogger.create_logger (Theotokos = Class.new)
 
 logger.info 'Initialize WS test application...'
-models = ExecutionInitializer.load_test_models
-logger.debug "Got test models: #{models.join(', ')}"
+command.test_files = ExecutionInitializer.load_test_models
+logger.debug "Got test models: #{command.test_files.join(', ')}"
 
 logger.info 'Initialize executors'
 main_executor = ExecutionInitializer.new do |e|
-  e.command = Execution.new {|e| e.test_files = models }
+  e.command = command
 end
 app_result = main_executor.init_executors
 

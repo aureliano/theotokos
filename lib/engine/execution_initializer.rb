@@ -30,7 +30,7 @@ module Engine
         end.execute
         
         suite.calculate_totals
-        console_report.print suite
+        console_report.print suite unless console_report.nil?
         suites << suite
         puts
       end
@@ -40,7 +40,7 @@ module Engine
         t.calculate_totals
       end
       
-      console_report.print @test_app_result
+      console_report.print @test_app_result unless console_report.nil?
     end
   
     def self.load_test_models
