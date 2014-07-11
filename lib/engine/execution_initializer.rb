@@ -49,8 +49,11 @@ module Engine
     
     def self.load_test_models_by_path(model_path)
       path = model_path.dup
-      path << '/' unless path.end_with? '/'
-      path << '**/*.yml' unless path.end_with? '.yml'
+
+      unless path.end_with? '.yml'
+        path << '/' unless path.end_with? '/'
+        path << '**/*.yml'
+      end
       
       Dir.glob(path).map {|file| file }
     end

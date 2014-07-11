@@ -42,9 +42,17 @@ module Helper
     
     begin
       opts.parse!
+      test_models_path = ARGV.pop
+      match = /.yml:(\d+)$/.match(test_models_path)
+      command.test_index = match.captures.first.to_i unless match.nil?
+      
+      command.execution_path = test_models_path.sub(/:(\d+)$/, '') if test_models_path
+
+      
+      
       command
-    rescue Exception => ex
-      puts " - Error: #{ex}"
+    rescue Exception => ex      
+      puts " - Error: #{ex}" unless ex.instance_of? SystemExit
       exit -1
     end
   end
