@@ -16,7 +16,7 @@ class TestExecutionInitializer < Test::Unit::TestCase
       'test/ws-test-models/do_something.yml',
       'test/ws-test-models/project1/look_for_stuff.yml'
     ].sort
-    assert_equal ExecutionInitializer.load_test_models.sort, models
+    assert_equal ExecutionInitializer.load_test_models(nil).sort, models
   end
   
 end
