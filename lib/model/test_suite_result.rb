@@ -40,6 +40,16 @@ module Model
       (@test_results.nil?) ? 0 : @test_results.size
     end
     
+    def name
+      return '' if @model.nil?
+      
+      regex = Regexp.new ENV['ws.test.models.path'].sub(/\/$/, '')
+      name = @model.source.sub regex, ''
+      name.sub! /^\//, ''
+      
+      name.sub('.yml', '').split('/').join('_')
+    end
+    
     def to_hash
       { :model => ((@model) ? @model.to_hash : @model),
       :test_results => ((@test_results) ? @test_results.map {|t| t.to_hash } : @test_results),

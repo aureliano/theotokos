@@ -44,20 +44,24 @@ module Engine
         
         res = SoapNet.send_request :wsdl => @test_suite.wsdl, :ws_config => @ws_config,
           :ws_security => test.ws_security, :service => @test_suite.service, :params => test.input
+        test_result.test_expectation = test.output
         
         if res[:success] == false && !test_result.error_expected
           test_result.error = { :message => 'Send request failure', :backtrace => res[:xml] }
           test_result.status = TestStatus.new :error => true
           results << test_result
+          
+          @console_report.print test_result unless @console_report.nil?
           next
         elsif res[:success] == true && test_result.error_expected
           test_result.error = { :message => 'It was supposed to get an exception but nothing was caught.' }
           test_result.status = TestStatus.new :error => true
           results << test_result
+          
+          @console_report.print test_result unless @console_report.nil?
           next
         end
         
-        test_result.test_expectation = test.output
         test_result.test_actual = save_web_service_result res[:xml]
         test_res = validate_test_execution test.output, test_result.test_actual
         if test_res.instance_of? Model::TestStatus

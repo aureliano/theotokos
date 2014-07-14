@@ -43,8 +43,9 @@ module Model
     def total_test_cases
       return 0 if @suites.nil?
       
-      total = @suites.reduce {|sum, suite| sum += suite.test_results.size }
-      (total.nil?) ? 0 : total
+      total = 0
+      @suites.each {|suite| total += suite.test_results.size }
+      total
     end
     
     def to_hash

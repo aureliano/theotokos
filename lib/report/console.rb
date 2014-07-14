@@ -30,14 +30,18 @@ module Report
 
           exp.each do |k, v|
             _append "#{k}: #{v}"
-            status = test.status.test_text_status[k.to_sym]
-            _append "Status: #{status ? 'Passed' : 'Failed'}"
+            if test.status.test_text_status.nil?
+              _append "Status: Not performed"
+            else
+              status = test.status.test_text_status[k.to_sym]
+              _append "Status: #{status ? 'Passed' : 'Failed'}"
+            end
           end
         end          
       end
       
       if test.error
-        backtrace = test.error[:backtrace].join("\n")
+        backtrace = ((test.error[:backtrace].instance_of? Array) ? test.error[:backtrace].join("\n") : test.error[:backtrace])
         _append "\n - Error message: #{test.error[:message]}"
         _append "\n - Error detail:\n#{backtrace}"
       else

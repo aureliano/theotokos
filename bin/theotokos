@@ -14,7 +14,7 @@ logger = AppLogger.create_logger (Theotokos = Class.new)
 logger.info 'Initialize WS test application...'
 logger.info "Mapping test models in #{((command.execution_path) ? command.execution_path : ENV['ws.test.models.path'])}"
 command.test_files = ExecutionInitializer.load_test_models command.execution_path
-logger.info "Got test models: #{command.test_files.join(', ')}"
+logger.debug "Got test models: #{command.test_files.join(', ')}"
 
 logger.info 'Initialize executors'
 main_executor = ExecutionInitializer.new do |e|

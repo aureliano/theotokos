@@ -9,18 +9,17 @@ module Report
       @app = data[:app_result]
       @ws_config = data[:ws_config]
       @tags = data[:tags]
+      @suite_pages = {}
       
       file = "#{ENV['ws.test.reports.path']}/index.html"
       File.open(file, 'w') {|file| file.write _generate_index }
+      puts " -- HTML report saved to #{file}" unless ENV['ENVIRONMENT'] == 'test'
       
       @app.suites.each do |suite|
-        name = suite.model.source
-        file_name = name[name.rindex('/') + 1, name.size]
-        file = "#{ENV['ws.test.reports.path']}/#{file_name}.html"
+        file = "#{ENV['ws.test.reports.path']}/#{suite.name}.html"
         File.open(file, 'w') {|file| file.write _generate_suite suite }
       end
       
-      puts " -- HTML report saved to #{file}" unless ENV['ENVIRONMENT'] == 'test'
       file
     end
     
@@ -120,10 +119,10 @@ module Report
             }
           }
           doc.tbody {
-            doc.tr {
-              @app.suites.each do |suite|
+            @app.suites.each do |suite|
+              doc.tr {
                 doc.td {
-                  doc.a(:href => '')
+                  doc.a(:href => "#{suite.name}.html") { doc.text suite.name }
                 }
                 doc.td {
                   doc.text suite.total_success
@@ -134,9 +133,9 @@ module Report
                 doc.td {
                   doc.text suite.test_results.size
                 }
-              end
+              }
+            end
             }
-          }
           doc.tfooter {
             doc.tr {
               doc.th @app.total_suites
@@ -175,7 +174,7 @@ module Report
     def _suite_head(doc)
       doc.meta 'http-equiv' => "Content-Type", :content => "text/html; charset=utf-8"
       doc.title 'Test suite result'
-      doc.link :href => "stylesheets/bootstrap.min.css", :media => "screen", :rel => "stylesheet", :type => "text/css"
+      doc.link :href => "http://getbootstrap.com/2.3.2/assets/css/bootstrap.css", :media => "screen", :rel => "stylesheet", :type => "text/css"
     end
     
     def _suite_body(suite, doc)
@@ -196,7 +195,7 @@ module Report
     def _suite_div_introduction(suite, doc)
       doc.div(:id => "div_introducao") {
         doc.div(:class => "alert alert-#{((suite.success?) ? 'success' : 'error')}") {
-          doc.h3 "Test suite: #{suite.model.source}"
+          doc.h3 "Test suite: #{suite.model.source.sub(/^#{Regexp.new(ENV['ws.test.models.path'])}\/?/, '')}"
         }
         
         doc.div(:class => "row") {
@@ -264,77 +263,310 @@ module Report
 
             doc.div(:class => "row") {
               doc.div(:class => "span3") {
-                'Status:'
+                doc.text 'Status:'
               }
               doc.div(:class => "span9") {
                 doc.text ((test.status.success?) ? 'Passed' : 'Failed')
               }
             }
-          }  
+          }
+          
+          _suite_div_error test, doc if (test.status.error? && !test.error.nil?)
+          _suite_div_expectations test, doc
+          _suite_div_expected_output test, doc
         end
       }
+    end
+    
+    def _suite_div_error(test, doc)
+      doc.h4 'Error'
+      doc.div(:class => "row") {
+        doc.div(:class => "span3") {
+          doc.text 'Message:'
+        }
+        doc.div(:class => "span9") {
+          doc.text test.error[:message]
+        }
+      }
+      
+      doc.div(:class => "row") {
+        doc.div(:class => "span3") {
+          doc.text 'Bactrace:'
+        }
+        doc.div(:class => "span9") {
+          doc.pre {
+            doc.text test.error[:backtrace]
+          }
+        }
+      }
+    end
+    
+    def _suite_div_expectations(test, doc)
+      doc.h4 'Test expectations'
+     _suite_div_file_expectation test, doc
+     _suite_div_text_expectations test, doc
+    end
+    
+    def _suite_div_file_expectation(test, doc)
+      if test.test_expectation && test.test_expectation['file']
+        doc.div(:class => "row") {
+          doc.div(:class => "span3") {
+            doc.text 'File:'
+          }
+          doc.div(:class => "span9") {
+            doc.div(:class => "accordion", :id => "accordion_expectation_file_#{test.name}") {
+              doc.div(:class => "accordion-group") {
+                doc.div(:class => "accordion-heading") {
+                  doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_file_#{test.name}", :href => "#collapse_expectation_file_#{test.name}") {
+                    doc.text 'Expand / Collapse'
+                  }
+                }
+                doc.div(:id => "collapse_expectation_file_#{test.name}", :class => "accordion-body collapse") {
+                  doc.div(:class => "accordion-inner") {
+                    doc.pre {
+                      doc.text _expected_file(test.test_expectation['file'])
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        
+        doc.div(:class => "row") {
+          doc.div(:class => "span3") {
+            doc.text 'Status:'
+          }
+          doc.div(:class => "span9") {
+            doc.text test.status.test_file_status ? 'Passed' : 'Failed'
+          }
+        }
+        
+        doc.br
+      end
+    end
+    
+    def _suite_div_text_expectations(test, doc)
+      if test.test_expectation && test.test_expectation['text']
+        _suite_div_text_expectations_equals test, doc
+        _suite_div_text_expectations_contains test, doc
+        _suite_div_text_expectations_not_contains test, doc
+        _suite_div_text_expectations_regex test, doc
+      end
+    end
+    
+    def _suite_div_text_expectations_equals(test, doc)
+      return unless test.test_expectation['text']['equals']
+      status = ((test.status.test_text_status.nil?) ? 'Not performed' : test.status.test_text_status[:equals])
+      status = status ? 'Passed' : 'Failed' unless test.status.test_text_status.nil?
+            
+      doc.div(:class => "row") {
+        doc.div(:class => "span3") {
+          doc.text 'Text equals:'
+        }
+        doc.div(:class => "span9") {
+          doc.div(:class => "accordion", :id => "accordion_expectation_text_equals_#{test.name}") {
+            doc.div(:class => "accordion-group") {
+              doc.div(:class => "accordion-heading") {
+                doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_text_equals_#{test.name}", :href => "#collapse_expectation_text_equals_#{test.name}") {
+                  doc.text 'Expand / Collapse'
+                }
+              }
+              doc.div(:id => "collapse_expectation_text_equals_#{test.name}", :class => "accordion-body collapse") {
+                doc.div(:class => "accordion-inner") {
+                  doc.pre {
+                    doc.text _format_xml(test.test_expectation['text']['equals'])
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      
+      doc.div(:class => "row") {
+        doc.div(:class => "span3") {
+          doc.text 'Status:'
+        }
+        doc.div(:class => "span9") {
+          doc.text status
+        }
+      }
+      
+      doc.br
+    end
+    
+    def _suite_div_text_expectations_contains(test, doc)
+      return unless test.test_expectation['text']['contains']
+      status = ((test.status.test_text_status.nil?) ? 'Not performed' : test.status.test_text_status[:contains])
+      status = status ? 'Passed' : 'Failed' unless test.status.test_text_status.nil?
+            
+      doc.div(:class => "row") {
+        doc.div(:class => "span3") {
+          doc.text 'Text contains:'
+        }
+        doc.div(:class => "span9") {
+          doc.div(:class => "accordion", :id => "accordion_expectation_text_contains_#{test.name}") {
+            doc.div(:class => "accordion-group") {
+              doc.div(:class => "accordion-heading") {
+                doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_text_contains_#{test.name}", :href => "#collapse_expectation_text_contains_#{test.name}") {
+                  doc.text 'Expand / Collapse'
+                }
+              }
+              doc.div(:id => "collapse_expectation_text_contains_#{test.name}", :class => "accordion-body collapse") {
+                doc.div(:class => "accordion-inner") {
+                  doc.pre {
+                    doc.text test.test_expectation['text']['contains']
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      
+      doc.div(:class => "row") {
+        doc.div(:class => "span3") {
+          doc.text 'Status:'
+        }
+        doc.div(:class => "span9") {
+          doc.text status
+        }
+      }
+      
+      doc.br
+    end
+    
+    def _suite_div_text_expectations_not_contains(test, doc)
+      return unless test.test_expectation['text']['not_contains']
+      status = ((test.status.test_text_status.nil?) ? 'Not performed' : test.status.test_text_status[:not_contains])
+      status = status ? 'Passed' : 'Failed' unless test.status.test_text_status.nil?
+            
+      doc.div(:class => "row") {
+        doc.div(:class => "span3") {
+          doc.text 'Text not contains:'
+        }
+        doc.div(:class => "span9") {
+          doc.div(:class => "accordion", :id => "accordion_expectation_text_not_contains_#{test.name}") {
+            doc.div(:class => "accordion-group") {
+              doc.div(:class => "accordion-heading") {
+                doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_text_not_contains_#{test.name}", :href => "#collapse_expectation_text_not_contains_#{test.name}") {
+                  doc.text 'Expand / Collapse'
+                }
+              }
+              doc.div(:id => "collapse_expectation_text_not_contains_#{test.name}", :class => "accordion-body collapse") {
+                doc.div(:class => "accordion-inner") {
+                  doc.pre {
+                    doc.text test.test_expectation['text']['not_contains']
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      
+      doc.div(:class => "row") {
+        doc.div(:class => "span3") {
+          doc.text 'Status:'
+        }
+        doc.div(:class => "span9") {
+          doc.text status
+        }
+      }
+      
+      doc.br
+    end
+    
+    def _suite_div_text_expectations_regex(test, doc)
+      return unless test.test_expectation['text']['regex']
+      status = ((test.status.test_text_status.nil?) ? 'Not performed' : test.status.test_text_status[:regex])
+      status = status ? 'Passed' : 'Failed' unless test.status.test_text_status.nil?
+            
+      doc.div(:class => "row") {
+        doc.div(:class => "span3") {
+          doc.text 'Text regex:'
+        }
+        doc.div(:class => "span9") {
+          doc.div(:class => "accordion", :id => "accordion_expectation_text_regex_#{test.name}") {
+            doc.div(:class => "accordion-group") {
+              doc.div(:class => "accordion-heading") {
+                doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_text_regex_#{test.name}", :href => "#collapse_expectation_text_regex_#{test.name}") {
+                  doc.text 'Expand / Collapse'
+                }
+              }
+              doc.div(:id => "collapse_expectation_text_regex_#{test.name}", :class => "accordion-body collapse") {
+                doc.div(:class => "accordion-inner") {
+                  doc.pre {
+                    doc.text test.test_expectation['text']['regex']
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      
+      doc.div(:class => "row") {
+        doc.div(:class => "span3") {
+          doc.text 'Status:'
+        }
+        doc.div(:class => "span9") {
+          doc.text status
+        }
+      }
+      
+      doc.br
+    end
+    
+    def _suite_div_expected_output(test, doc)
+      doc.h4 'Test output'
+      if test.test_actual
+        doc.div(:class => "row") {
+          doc.div(:class => "span3") { doc.text 'Response:' }
+        
+          doc.div(:class => "span9") {
+            doc.div(:class => "accordion", :id => "accordion_output_test_#{test.name}") {
+              doc.div(:class => "accordion-group") {
+                doc.div(:class => "accordion-heading") {
+                  doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse",  'data-parent' => "#accordion_output_test_#{test.name}", :href => "#collapse_output_test_#{test.name}") {
+                    doc.text 'Expand / Collapse'
+                  }
+                }
+                doc.div(:id => "collapse_output_test_#{test.name}", :class => "accordion-body collapse") {
+                  doc.div(:class => "accordion-inner") {
+                    doc.pre {
+                      doc.text _format_xml(_actual_file test.test_actual)
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      end
+    end
+
+    def _expected_file(expectation)
+      return if expectation.nil?
+      s = expectation.sub(/^#{Regexp.new(ENV['ws.test.output.files.path'])}/, '')
+      file = "#{ENV['ws.test.output.files.path']}/#{s}"
+      
+      return unless File.exist? file
+      
+      File.read(file)
+    end
+    
+    def _actual_file(file)
+      return unless File.exist? file
+      File.read file
+    end
+    
+    def _format_xml(text)
+      text = '' unless text
+      Nokogiri::XML(text).to_xml
     end
   
   end
 
 end
-
-
-
-
-
-
-
-unless test.status.success?
-              doc.h4 'Error'
-              doc.div(:class => "row") {
-                doc.div(:class => "span3") {
-                  doc.text 'Message:'
-                }
-                doc.div(:class => "span9") {
-                  doc.text test.error[:message]
-                }
-              }
-
-              doc.div(:class => "row") {
-                doc.div(:class => "span3") {
-                  doc.text 'Retorno:'
-                }
-                doc.div(:class => "span9") {
-                  doc.pre {
-                    doc.text format_xml test.error[:backtrace]
-                  }
-                }
-              }
-            end
-
-doc.h4 'Test expectations'
-            if test.test_expectation
-              if test.test_expectation['file']
-                doc.div(:class => "row") {
-                  doc.div(:class => "span3") {
-                    doc.text 'File:'
-                  }
-                  doc.div(:class => "span9") {
-                    doc.div(:class => "accordion", :id => "accordion_expectation_file_#{test.name}") {
-                      doc.div(:class => "accordion-group") {
-                        doc.div(:class => "accordion-heading") {
-                          doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_file_#{test.name}", :href => "#collapse_expectation_file_#{test.name}") {
-                            doc.text 'Expandir / Recolher'
-                          }
-                        }
-                        doc.div(:id => "collapse_expectation_file_#{test.name}", :class => "accordion-body collapse") {
-                          doc.div(:class => "accordion-inner") {
-                            doc.pre {
-                              doc.text expected_file(test.test_expectation['file'])
-                            }
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              elsif test.test_expectation['text']
-              
-              end
-            end
