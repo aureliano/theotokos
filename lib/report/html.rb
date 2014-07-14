@@ -16,7 +16,7 @@ module Report
       puts " -- HTML report saved to #{file}" unless ENV['ENVIRONMENT'] == 'test'
       
       @app.suites.each do |suite|
-        file = "#{ENV['ws.test.reports.path']}/#{suite.name}.html"
+        file = "#{ENV['ws.test.reports.path']}/#{suite.model.name}.html"
         File.open(file, 'w') {|file| file.write _generate_suite suite }
       end
       
@@ -122,7 +122,7 @@ module Report
             @app.suites.each do |suite|
               doc.tr {
                 doc.td {
-                  doc.a(:href => "#{suite.name}.html") { doc.text suite.name }
+                  doc.a(:href => "#{suite.model.name}.html") { doc.text suite.model.name }
                 }
                 doc.td {
                   doc.text suite.total_success

@@ -7,7 +7,7 @@ module Engine
     protected
     def save_web_service_result(data)
       Dir.mkdir 'tmp' unless File.exist? 'tmp'
-      file_name = "tmp/#{@test_suite.source.sub(ENV['ws.test.models.path'] + '/', '')}_#{@count}.xml"
+      file_name = "tmp/#{@test_suite.name}_#{@count}.xml"
       @logger.info "Web service response saved to #{file_name}"
     
       File.open(file_name, 'w') {|file| file.write data }

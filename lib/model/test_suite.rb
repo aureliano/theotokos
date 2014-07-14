@@ -20,6 +20,16 @@ module Model
       raise Exception, 'Service name (service to be tested) must be provided.' if @service.nil? || @service.empty?
     end
     
+    def name
+      return '' if @model.nil?
+      
+      regex = Regexp.new ENV['ws.test.models.path'].sub(/\/$/, '')
+      name =@source.sub regex, ''
+      name.sub! /^\//, ''
+      
+      name.sub('.yml', '').split('/').join('_')
+    end
+    
     def to_hash
       { :source => @source, :wsdl => @wsdl, :service => @service, :tags => @tags,
         :tests => ((@tests) ? @tests.map {|t| t.to_hash } : @tests) }
