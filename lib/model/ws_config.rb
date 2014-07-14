@@ -8,6 +8,11 @@ module Model
     
     attr_accessor :env_namespace, :namespaces, :ssl_verify_mode, :ssl_version,
                   :ssl_cert_file, :ssl_cert_key_file, :ssl_ca_cert_file, :ssl_cert_key_password
+
+    def self.ws_attributes
+      %W(env_namespace namespaces ssl_verify_mode ssl_version ssl_cert_file ssl_cert_key_file
+          ssl_ca_cert_file ssl_cert_key_password)
+    end
       
     def self.load_ws_config
       return WsConfig.new unless File.exist? ENV['ws.config.path']

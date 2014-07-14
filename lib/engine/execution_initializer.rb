@@ -8,7 +8,6 @@ module Engine
     
     def init_executors
       raise Exception, 'Execution command params must not be empty.' unless @command
-      ws_config = WsConfig.load_ws_config
       suites = []
       console_report = Reporter.create_reporter(:console) if @command.report_formats.include? :console
       
@@ -25,7 +24,7 @@ module Engine
         suite = SoapExecutor.new do |exe|
           exe.test_suite = model
           exe.test_index = @command.test_index
-          exe.ws_config = ws_config
+          exe.ws_config = @ws_config
           exe.console_report = console_report
         end.execute
         
@@ -80,7 +79,7 @@ module Engine
       end
     end
     
-    attr_accessor :command
+    attr_accessor :command, :ws_config
     attr_reader :test_app_result
   
   end

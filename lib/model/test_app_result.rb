@@ -8,7 +8,7 @@ module Model
       yield self if block_given?
     end
     
-    attr_accessor :suites
+    attr_accessor :suites, :date_report
     attr_reader :total_failures, :total_success, :broken_suites
     
     def calculate_totals
@@ -40,8 +40,15 @@ module Model
       (@suites.nil?) ? 0 : @suites.size
     end
     
+    def total_test_cases
+      return 0 if @suites.nil?
+      
+      total = @suites.reduce {|sum, suite| sum += suite.test_results.size }
+      (total.nil?) ? 0 : total
+    end
+    
     def to_hash
-      { :total_failures => @total_failures, :total_success => @total_success,
+      { :total_failures => @total_failures, :total_success => @total_success, :date_report => @date_report,
         :broken_suites => ((@broken_suites) ? @broken_suites.map {|s| s.to_hash } : @broken_suites),
         :suites => ((@suites) ? @suites.map {|s| s.to_hash } : @suites) }
     end

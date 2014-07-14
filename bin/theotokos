@@ -6,6 +6,7 @@ command = parse_cmd_options
 
 init_time = Time.now
 AppConfigParams.load_app_config_params
+ws_config = WsConfig.load_ws_config
 
 AppLogger.add_stdout_logger
 logger = AppLogger.create_logger (Theotokos = Class.new)
@@ -18,7 +19,12 @@ logger.info "Got test models: #{command.test_files.join(', ')}"
 logger.info 'Initialize executors'
 main_executor = ExecutionInitializer.new do |e|
   e.command = command
+  e.ws_config = ws_config
 end
-app_result = main_executor.init_executors
+main_executor.init_executors
+app_result = main_executor.test_app_result
+app_result.date_report = init_time
+
+Reporter.create_reporter(:html).print :app_result => app_result, :ws_config => ws_config, :tags => command.tags
 
 puts diff_time init_time, Time.now
