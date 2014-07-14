@@ -1,6 +1,7 @@
 require 'yaml'
 require 'json'
 require 'optparse'
+require 'fileutils'
 require 'logging'
 require 'savon'
 require 'equivalent-xml'

@@ -20,10 +20,26 @@ module Report
         File.open(file, 'w') {|file| file.write _generate_suite suite }
       end
       
+      _copy_resources
+      
       file
     end
     
     private
+    def _copy_resources
+      html_path = File.expand_path('../../../html', __FILE__)
+      css_path = "#{ENV['ws.test.reports.path']}/css"
+      Dir.mkdir css_path unless File.exist? css_path
+      
+      FileUtils.cp "#{html_path}/bootstrap.min.css", css_path
+      
+      js_path = "#{ENV['ws.test.reports.path']}/js"
+      Dir.mkdir js_path unless File.exist? js_path
+      
+      FileUtils.cp "#{html_path}/jquery.min.js", js_path
+      FileUtils.cp "#{html_path}/bootstrap-collapse.js", js_path
+    end
+    
     def _generate_index
       builder = Nokogiri::HTML::Builder.new do |doc|
         doc.html {
@@ -38,7 +54,7 @@ module Report
     def _index_head(doc)
       doc.meta 'http-equiv' => "Content-Type", :content => "text/html; charset=utf-8"
       doc.title 'Web Service Tests Report'
-      doc.link :href => "http://getbootstrap.com/2.3.2/assets/css/bootstrap.css", :media => "screen", :rel => "stylesheet", :type => "text/css"
+      doc.link :href => "css/bootstrap.min.css", :media => "screen", :rel => "stylesheet", :type => "text/css"
     end
     
     def _index_body(doc)
@@ -160,10 +176,8 @@ module Report
           doc.head { _suite_head doc }
           doc.body {
             _suite_body suite, doc
-            doc.script(:src => "http://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js",
-              :type => "text/javascript")
-            doc.script(:src => "http://getbootstrap.com/2.3.2/assets/js/bootstrap-collapse.js",
-              :type => "text/javascript")
+            doc.script(:src => "js/jquery.min.js", :type => "text/javascript")
+            doc.script(:src => "js/bootstrap-collapse.js", :type => "text/javascript")
           }
         }
       end
@@ -174,7 +188,7 @@ module Report
     def _suite_head(doc)
       doc.meta 'http-equiv' => "Content-Type", :content => "text/html; charset=utf-8"
       doc.title 'Test suite result'
-      doc.link :href => "http://getbootstrap.com/2.3.2/assets/css/bootstrap.css", :media => "screen", :rel => "stylesheet", :type => "text/css"
+      doc.link :href => "css/bootstrap.min.css", :media => "screen", :rel => "stylesheet", :type => "text/css"
     end
     
     def _suite_body(suite, doc)

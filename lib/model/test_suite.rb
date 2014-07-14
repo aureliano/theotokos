@@ -21,8 +21,6 @@ module Model
     end
     
     def name
-      return '' if @model.nil?
-      
       regex = Regexp.new ENV['ws.test.models.path'].sub(/\/$/, '')
       name =@source.sub regex, ''
       name.sub! /^\//, ''
