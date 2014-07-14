@@ -3,6 +3,7 @@ module Report
   class Html < Reporter
   
     def print(data)
+      return if ENV['ENVIRONMENT'] == 'test'
       Dir.mkdir 'tmp' unless File.exist? 'tmp'
       Dir.mkdir ENV['ws.test.reports.path'] unless File.exist? ENV['ws.test.reports.path']
 
