@@ -17,3 +17,4 @@ main.execute
 main.save_reports
 
 puts diff_time init_time, Time.now
+exit -1 if main.test_app_result.error?
