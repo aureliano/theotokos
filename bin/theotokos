@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-require File.expand_path '../../lib/requires.rb', __FILE__
+require File.expand_path '../../lib/theotokos.rb', __FILE__
 
 command = parse_cmd_options
 
@@ -8,23 +8,12 @@ init_time = Time.now
 AppConfigParams.load_app_config_params
 ws_config = WsConfig.load_ws_config
 
-AppLogger.add_stdout_logger
-logger = AppLogger.create_logger (Theotokos = Class.new)
-
-logger.info 'Initialize WS test application...'
-logger.info "Mapping test models in #{((command.execution_path) ? command.execution_path : ENV['ws.test.models.path'])}"
-command.test_files = ExecutionInitializer.load_test_models command.execution_path
-logger.debug "Got test models: #{command.test_files.join(', ')}"
-
-logger.info 'Initialize executors'
-main_executor = ExecutionInitializer.new do |e|
-  e.command = command
-  e.ws_config = ws_config
+main = Theotokos::App.new do |t|
+  t.execution = command
+  t.ws_config = ws_config
 end
-main_executor.init_executors
-app_result = main_executor.test_app_result
-app_result.date_report = init_time
 
-Reporter.create_reporter(:html).print :app_result => app_result, :ws_config => ws_config, :tags => command.tags
+main.execute
+main.save_reports
 
 puts diff_time init_time, Time.now

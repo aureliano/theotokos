@@ -44,11 +44,9 @@ module Helper
       opts.parse!
       test_models_path = ARGV.pop
       match = /.yml:(\d+)$/.match(test_models_path)
-      command.test_index = match.captures.first.to_i unless match.nil?
       
+      command.test_index = match.captures.first.to_i unless match.nil?      
       command.execution_path = test_models_path.sub(/:(\d+)$/, '') if test_models_path
-
-      
       
       command
     rescue Exception => ex      
