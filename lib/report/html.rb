@@ -39,6 +39,7 @@ module Report
       
       FileUtils.cp "#{html_path}/jquery.min.js", js_path
       FileUtils.cp "#{html_path}/bootstrap-collapse.js", js_path
+      FileUtils.cp "#{html_path}/Chart.min.js", js_path
     end
     
     def _generate_index
@@ -56,6 +57,8 @@ module Report
       doc.meta 'http-equiv' => "Content-Type", :content => "text/html; charset=utf-8"
       doc.title 'Web Service Tests Report'
       doc.link :href => "css/bootstrap.min.css", :media => "screen", :rel => "stylesheet", :type => "text/css"
+      doc.script :src => 'js/Chart.min.js'
+      
     end
     
     def _index_body(doc)
@@ -165,9 +168,10 @@ module Report
         
         doc.h4 '3.2 - Statistics'
         doc.h5 '3.2.1 - Success x Failures'
-        doc.div(:id => "chart_div_success_failure")
-        doc.h5 '3.2.2 - Test cases implementation'
-        doc.div(:id => "chart_div_test_implementation")
+        doc.canvas(:id => "success_failures_chart", :width => "250", :height => "250")
+        doc.script {
+          doc.text ChartFactory.pie_chart(:id => 'success_failures_chart', :total_success => @app.total_success, :total_failures => @app.total_failures)
+        }
       }
     end
     

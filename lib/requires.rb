@@ -28,6 +28,8 @@ require File.expand_path '../../lib/report/reporter.rb', __FILE__
 require File.expand_path '../../lib/report/console.rb', __FILE__
 require File.expand_path '../../lib/report/html.rb', __FILE__
 require File.expand_path '../../lib/report/json.rb', __FILE__
+require File.expand_path '../../lib/report/chart_factory.rb', __FILE__
+
 
 include Model
 include Configuration
