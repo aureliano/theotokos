@@ -5,8 +5,8 @@ require File.expand_path '../../../../lib/engine/parser.rb', __FILE__
 
 class TestParser < Test::Unit::TestCase
 
-  include Model
-  include Engine
+  include Theotokos::Model
+  include Theotokos::Engine
   
   def test_yaml_to_hash
     assert_raise(Exception, 'File path/to/unexisting/file does not exist.') { Parser.yaml_to_hash 'path/to/unexisting/file' }

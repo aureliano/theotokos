@@ -4,7 +4,7 @@ require File.expand_path '../../../../lib/model/test_result.rb', __FILE__
 
 class TestTestSuiteResult < Test::Unit::TestCase
 
-  include Model
+  include Theotokos::Model
   
   def test_calculate_totals
     suite = TestSuiteResult.new

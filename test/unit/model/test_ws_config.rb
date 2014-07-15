@@ -5,8 +5,8 @@ require File.expand_path '../../../../lib/config/app_config_params.rb', __FILE__
 
 class TestWsConfig < Test::Unit::TestCase
 
-  include Model
-  include Configuration
+  include Theotokos::Model
+  include Theotokos::Configuration
   
   def test_load_ws_config
     _prepare_test

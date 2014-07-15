@@ -8,7 +8,7 @@ require File.expand_path '../../../../lib/model/test_result.rb', __FILE__
 class TestJson < Test::Unit::TestCase
 
   include Report
-  include Model
+  include Theotokos::Model
   
   def test_print_success_test_result
     app = TestAppResult.new do |a|

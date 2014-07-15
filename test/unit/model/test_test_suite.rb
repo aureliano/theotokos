@@ -3,7 +3,7 @@ require File.expand_path '../../../../lib/model/test_suite.rb', __FILE__
 
 class TestTestSuite < Test::Unit::TestCase
 
-  include Model
+  include Theotokos::Model
   
   def test_initialization
     _hash_initialization

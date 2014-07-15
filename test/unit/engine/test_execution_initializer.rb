@@ -4,8 +4,8 @@ require File.expand_path '../../../../lib/model/execution.rb', __FILE__
 
 class TestExecutionInitializer < Test::Unit::TestCase
 
-  include Engine
-  include Model
+  include Theotokos::Engine
+  include Theotokos::Model
   
   def test_init_executors
     assert_raise(Exception, 'Execution command params must not be empty.') { ExecutionInitializer.new.init_executors }

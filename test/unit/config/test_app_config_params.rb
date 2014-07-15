@@ -4,7 +4,7 @@ require File.expand_path '../../../../lib/config/app_config_params.rb', __FILE__
 
 class TestAppConfigParams < Test::Unit::TestCase
 
-  include Configuration
+  include Theotokos::Configuration
   
   def test_load_params
     ENV['app.cfg.path'] = 'test/app-cfg.yml'

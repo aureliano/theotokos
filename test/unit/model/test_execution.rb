@@ -3,7 +3,7 @@ require File.expand_path '../../../../lib/model/execution.rb', __FILE__
 
 class TestExecution < Test::Unit::TestCase
 
-  include Model
+  include Theotokos::Model
   
   def test_initialization
     exec = Execution.new

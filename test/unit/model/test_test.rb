@@ -3,7 +3,7 @@ require File.expand_path '../../../../lib/model/test.rb', __FILE__
 
 class TestTest < Test::Unit::TestCase
 
-  include Model
+  include Theotokos::Model
   
   def test_read_methods_presence
     test = Test.new

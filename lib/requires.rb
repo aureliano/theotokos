@@ -31,7 +31,7 @@ require File.expand_path '../../lib/report/json.rb', __FILE__
 require File.expand_path '../../lib/report/chart_factory.rb', __FILE__
 require File.expand_path '../../lib/version.rb', __FILE__
 
-
+include Theotokos
 include Model
 include Configuration
 include Engine

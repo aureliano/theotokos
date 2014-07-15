@@ -3,7 +3,7 @@ require File.expand_path '../../../../lib/model/text_operator.rb', __FILE__
 
 class TestTextOperator < Test::Unit::TestCase
 
-  include Model
+  include Theotokos::Model
   
   def test_initialization
     _hash_initialization

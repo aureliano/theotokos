@@ -4,7 +4,7 @@ require File.expand_path '../../../../lib/assertion/test_assertion.rb', __FILE__
 
 class TestAssertion < Test::Unit::TestCase
 
-  include Assertion
+  include Theotokos::Assertion
   
   def test_compare_file
     assert_raise(Exception, "File /path/to/file1 does not exist") { TestAssertion.compare_file '/path/to/file1', '/path/to/file2' }

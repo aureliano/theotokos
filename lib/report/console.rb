@@ -4,9 +4,9 @@ module Report
     
     def print(object)
       case object.class.name
-        when Model::TestResult.name then _print_test_result object
-        when Model::TestSuiteResult.name then _print_test_suite_result object
-        when Model::TestAppResult.name then _print_test_app_result object
+        when Theotokos::Model::TestResult.name then _print_test_result object
+        when Theotokos::Model::TestSuiteResult.name then _print_test_suite_result object
+        when Theotokos::Model::TestAppResult.name then _print_test_app_result object
         else puts "Console printing is not supported for objects of type #{object.class.name}"
       end
     end
