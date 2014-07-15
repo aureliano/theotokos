@@ -2,10 +2,12 @@ require File.expand_path '../requires.rb', __FILE__
 
 module Theotokos
 
-  class App
+  class Theotokos
   
     def initialize
       yield self if block_given?
+      
+      AppConfigParams.load_app_config_params unless ENV['app.config.params.loaded'] == 'true'
       AppLogger.add_stdout_logger
     end
     

@@ -8,7 +8,7 @@ init_time = Time.now
 AppConfigParams.load_app_config_params
 ws_config = WsConfig.load_ws_config
 
-main = Theotokos::App.new do |t|
+main = Theotokos::Theotokos.new do |t|
   t.execution = command
   t.ws_config = ws_config
 end

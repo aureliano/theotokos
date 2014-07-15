@@ -15,6 +15,7 @@ module Configuration
       ENV['logger.rolling_file.file'] = params['logger.rolling_file.file']
       ENV['logger.rolling_file.pattern'] = params['logger.rolling_file.pattern']
       ENV['logger.rolling_file.date_pattern'] = params['logger.rolling_file.date_pattern']
+      ENV['app.config.params.loaded'] = 'true'
     end
     
     def self._get_config_hash

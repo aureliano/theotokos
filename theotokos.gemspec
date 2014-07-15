@@ -18,4 +18,8 @@ Gem::Specification.new do |s|
   s.test_files   = `git ls-files -- test/*`.split("\n")
   s.executables  = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.rdoc_options = ["--charset=UTF-8"]
+  
+  s.add_runtime_dependency 'logging', '~> 1.8.2'
+  s.add_runtime_dependency 'savon'
+  s.add_runtime_dependency 'equivalent-xml', '~> 0.4.2'
 end
