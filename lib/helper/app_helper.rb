@@ -35,7 +35,7 @@ module Helper
       end
 
       opts.on_tail("-v", "--version", "Show version") do
-        puts '0.0.1'
+        puts "theotokos #{Theotokos::VERSION}"
         exit
       end
     end
