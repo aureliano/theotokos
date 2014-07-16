@@ -20,6 +20,6 @@ Gem::Specification.new do |s|
   s.rdoc_options = ["--charset=UTF-8"]
   
   s.add_runtime_dependency 'logging', '~> 1.8.2'
-  s.add_runtime_dependency 'savon'
+  s.add_runtime_dependency 'savon', '2.5.1'
   s.add_runtime_dependency 'equivalent-xml', '~> 0.4.2'
 end
