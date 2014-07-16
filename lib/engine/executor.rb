@@ -48,39 +48,40 @@ module Theotokos
         end
       end
       
-      def before_suite
+      def before_suite(test_suite)
         @logger.debug 'Playing Before Suite'
         return if HOOKS[:before_suite].nil?
         
         HOOKS[:before_suite].each do |block|
-          block.call
+          block.call test_suite
         end
       end
       
-      def after_suite
+      def after_suite(test_suite, test_suite_result)
         @logger.debug 'Playing After Suite'
         return if HOOKS[:after_suite].nil?
         
+        test_suite_result.calculate_totals
         HOOKS[:after_suite].each do |block|
-          block.call
+          block.call test_suite, test_suite_result
         end
       end
       
-      def before_test
+      def before_test(test)
         @logger.debug 'Playing Before Test'
         return if HOOKS[:before_test].nil?
         
         HOOKS[:before_test].each do |block|
-          block.call
+          block.call test
         end
       end
       
-      def after_test
+      def after_test(test, test_result)
         @logger.debug 'Playing After Test'
         return if HOOKS[:after_test].nil?
         
         HOOKS[:after_test].each do |block|
-          block.call
+          block.call test, test_result
         end
       end
       

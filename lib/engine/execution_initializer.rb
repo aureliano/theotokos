@@ -41,7 +41,7 @@ module Theotokos
           t.calculate_totals
         end
         
-        ExecutionInitializer._after_app
+        ExecutionInitializer._after_app @test_app_result
         console_report.print @test_app_result unless console_report.nil?
       end
     
@@ -90,11 +90,11 @@ module Theotokos
         end
       end
       
-      def self._after_app
+      def self._after_app(result)
         return if HOOKS[:after_app].nil?
         
         HOOKS[:after_app].each do |block|
-          block.call
+          block.call result
         end
       end
             
