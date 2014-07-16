@@ -45,6 +45,7 @@ module Theotokos
             t.name = test.name
             t.description = test.description
             t.error_expected = test.error_expected
+            t.tags = test.tags
           end
           
           res = SoapNet.send_request :wsdl => @test_suite.wsdl, :ws_config => @ws_config,

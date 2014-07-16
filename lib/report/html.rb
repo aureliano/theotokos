@@ -318,6 +318,16 @@ module Report
                 doc.text test.description
               }
             }
+            
+            doc.div(:class => "row") {
+              doc.div(:class => "span3") {
+                doc.text 'Tags:'
+              }
+              doc.div(:class => "span9") {
+                txt = ((test.tags.nil?) ? '' : test.tags.join(', '))
+                doc.text txt
+              }
+            }
 
             doc.div(:class => "row") {
               doc.div(:class => "span3") {

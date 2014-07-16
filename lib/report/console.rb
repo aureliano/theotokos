@@ -15,6 +15,8 @@ module Report
     def _print_test_result(test)
       @output = ''
       _append "Test case: ##{test.name}"
+      _append "Test description: #{test.description}"
+      _append "Tags: #{test.tags.join(', ')}" if test.tags
       _append "Test expectations."
       
       if test.test_expectation
