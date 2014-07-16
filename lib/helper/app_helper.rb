@@ -55,6 +55,19 @@ module Theotokos
         exit -1
       end
     end
+    
+    def format_ws_model_path(file)
+      format_app_path 'ws.test.models.path', file
+    end
+    
+    def format_ws_output_path(file)
+      format_app_path 'ws.test.output.files.path', file
+    end
+    
+    def format_app_path(key, file)
+      f = file.sub Regexp.new("^#{ENV[key]}"), ''
+      File.join(ENV[key], f)
+    end
 
     def diff_time(inicio, fim)
       diferenca = (fim - inicio)

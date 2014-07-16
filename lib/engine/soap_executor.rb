@@ -42,7 +42,7 @@ module Theotokos
           result = {}
           self.before_test test
           test_result = TestResult.new do |t|
-            t.name = test.name
+            t.name = ((test.name.nil?) ? @count : test.name)
             t.description = test.description
             t.error_expected = test.error_expected
             t.tags = test.tags
