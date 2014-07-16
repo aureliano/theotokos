@@ -321,8 +321,8 @@ module Report
           }
           
           _suite_div_error test, doc if (test.status.error? && !test.error.nil?)
-          _suite_div_expectations test, doc
-          _suite_div_expected_output test, doc
+          _suite_div_expectations count, test, doc
+          _suite_div_expected_output count, test, doc
         end
       }
     end
@@ -350,27 +350,27 @@ module Report
       }
     end
     
-    def _suite_div_expectations(test, doc)
+    def _suite_div_expectations(index, test, doc)
       doc.h4 'Test expectations'
-     _suite_div_file_expectation test, doc
-     _suite_div_text_expectations test, doc
+     _suite_div_file_expectation index, test, doc
+     _suite_div_text_expectations index, test, doc
     end
     
-    def _suite_div_file_expectation(test, doc)
+    def _suite_div_file_expectation(index, test, doc)
       if test.test_expectation && test.test_expectation['file']
         doc.div(:class => "row") {
           doc.div(:class => "span3") {
             doc.text 'File:'
           }
           doc.div(:class => "span9") {
-            doc.div(:class => "accordion", :id => "accordion_expectation_file_#{test.name}") {
+            doc.div(:class => "accordion", :id => "accordion_expectation_file_#{index}") {
               doc.div(:class => "accordion-group") {
                 doc.div(:class => "accordion-heading") {
-                  doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_file_#{test.name}", :href => "#collapse_expectation_file_#{test.name}") {
+                  doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_file_#{index}", :href => "#collapse_expectation_file_#{index}") {
                     doc.text 'Expand / Collapse'
                   }
                 }
-                doc.div(:id => "collapse_expectation_file_#{test.name}", :class => "accordion-body collapse") {
+                doc.div(:id => "collapse_expectation_file_#{index}", :class => "accordion-body collapse") {
                   doc.div(:class => "accordion-inner") {
                     doc.pre {
                       doc.text _expected_file(test.test_expectation['file'])
@@ -395,16 +395,16 @@ module Report
       end
     end
     
-    def _suite_div_text_expectations(test, doc)
+    def _suite_div_text_expectations(index, test, doc)
       if test.test_expectation && test.test_expectation['text']
-        _suite_div_text_expectations_equals test, doc
-        _suite_div_text_expectations_contains test, doc
-        _suite_div_text_expectations_not_contains test, doc
-        _suite_div_text_expectations_regex test, doc
+        _suite_div_text_expectations_equals index, test, doc
+        _suite_div_text_expectations_contains index, test, doc
+        _suite_div_text_expectations_not_contains index, test, doc
+        _suite_div_text_expectations_regex index, test, doc
       end
     end
     
-    def _suite_div_text_expectations_equals(test, doc)
+    def _suite_div_text_expectations_equals(index, test, doc)
       return unless test.test_expectation['text']['equals']
       status = ((test.status.test_text_status.nil?) ? 'Not performed' : test.status.test_text_status[:equals])
       status = status ? 'Passed' : 'Failed' unless test.status.test_text_status.nil?
@@ -414,14 +414,14 @@ module Report
           doc.text 'Text equals:'
         }
         doc.div(:class => "span9") {
-          doc.div(:class => "accordion", :id => "accordion_expectation_text_equals_#{test.name}") {
+          doc.div(:class => "accordion", :id => "accordion_expectation_text_equals_#{index}") {
             doc.div(:class => "accordion-group") {
               doc.div(:class => "accordion-heading") {
-                doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_text_equals_#{test.name}", :href => "#collapse_expectation_text_equals_#{test.name}") {
+                doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_text_equals_#{index}", :href => "#collapse_expectation_text_equals_#{index}") {
                   doc.text 'Expand / Collapse'
                 }
               }
-              doc.div(:id => "collapse_expectation_text_equals_#{test.name}", :class => "accordion-body collapse") {
+              doc.div(:id => "collapse_expectation_text_equals_#{index}", :class => "accordion-body collapse") {
                 doc.div(:class => "accordion-inner") {
                   doc.pre {
                     doc.text _format_xml(test.test_expectation['text']['equals'])
@@ -445,7 +445,7 @@ module Report
       doc.br
     end
     
-    def _suite_div_text_expectations_contains(test, doc)
+    def _suite_div_text_expectations_contains(index, test, doc)
       return unless test.test_expectation['text']['contains']
       status = ((test.status.test_text_status.nil?) ? 'Not performed' : test.status.test_text_status[:contains])
       status = status ? 'Passed' : 'Failed' unless test.status.test_text_status.nil?
@@ -455,14 +455,14 @@ module Report
           doc.text 'Text contains:'
         }
         doc.div(:class => "span9") {
-          doc.div(:class => "accordion", :id => "accordion_expectation_text_contains_#{test.name}") {
+          doc.div(:class => "accordion", :id => "accordion_expectation_text_contains_#{index}") {
             doc.div(:class => "accordion-group") {
               doc.div(:class => "accordion-heading") {
-                doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_text_contains_#{test.name}", :href => "#collapse_expectation_text_contains_#{test.name}") {
+                doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_text_contains_#{index}", :href => "#collapse_expectation_text_contains_#{index}") {
                   doc.text 'Expand / Collapse'
                 }
               }
-              doc.div(:id => "collapse_expectation_text_contains_#{test.name}", :class => "accordion-body collapse") {
+              doc.div(:id => "collapse_expectation_text_contains_#{index}", :class => "accordion-body collapse") {
                 doc.div(:class => "accordion-inner") {
                   doc.pre {
                     doc.text test.test_expectation['text']['contains']
@@ -486,7 +486,7 @@ module Report
       doc.br
     end
     
-    def _suite_div_text_expectations_not_contains(test, doc)
+    def _suite_div_text_expectations_not_contains(index, test, doc)
       return unless test.test_expectation['text']['not_contains']
       status = ((test.status.test_text_status.nil?) ? 'Not performed' : test.status.test_text_status[:not_contains])
       status = status ? 'Passed' : 'Failed' unless test.status.test_text_status.nil?
@@ -496,14 +496,14 @@ module Report
           doc.text 'Text not contains:'
         }
         doc.div(:class => "span9") {
-          doc.div(:class => "accordion", :id => "accordion_expectation_text_not_contains_#{test.name}") {
+          doc.div(:class => "accordion", :id => "accordion_expectation_text_not_contains_#{index}") {
             doc.div(:class => "accordion-group") {
               doc.div(:class => "accordion-heading") {
-                doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_text_not_contains_#{test.name}", :href => "#collapse_expectation_text_not_contains_#{test.name}") {
+                doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_text_not_contains_#{index}", :href => "#collapse_expectation_text_not_contains_#{index}") {
                   doc.text 'Expand / Collapse'
                 }
               }
-              doc.div(:id => "collapse_expectation_text_not_contains_#{test.name}", :class => "accordion-body collapse") {
+              doc.div(:id => "collapse_expectation_text_not_contains_#{index}", :class => "accordion-body collapse") {
                 doc.div(:class => "accordion-inner") {
                   doc.pre {
                     doc.text test.test_expectation['text']['not_contains']
@@ -527,7 +527,7 @@ module Report
       doc.br
     end
     
-    def _suite_div_text_expectations_regex(test, doc)
+    def _suite_div_text_expectations_regex(index, test, doc)
       return unless test.test_expectation['text']['regex']
       status = ((test.status.test_text_status.nil?) ? 'Not performed' : test.status.test_text_status[:regex])
       status = status ? 'Passed' : 'Failed' unless test.status.test_text_status.nil?
@@ -537,14 +537,14 @@ module Report
           doc.text 'Text regex:'
         }
         doc.div(:class => "span9") {
-          doc.div(:class => "accordion", :id => "accordion_expectation_text_regex_#{test.name}") {
+          doc.div(:class => "accordion", :id => "accordion_expectation_text_regex_#{index}") {
             doc.div(:class => "accordion-group") {
               doc.div(:class => "accordion-heading") {
-                doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_text_regex_#{test.name}", :href => "#collapse_expectation_text_regex_#{test.name}") {
+                doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_text_regex_#{index}", :href => "#collapse_expectation_text_regex_#{index}") {
                   doc.text 'Expand / Collapse'
                 }
               }
-              doc.div(:id => "collapse_expectation_text_regex_#{test.name}", :class => "accordion-body collapse") {
+              doc.div(:id => "collapse_expectation_text_regex_#{index}", :class => "accordion-body collapse") {
                 doc.div(:class => "accordion-inner") {
                   doc.pre {
                     doc.text test.test_expectation['text']['regex']
@@ -568,21 +568,21 @@ module Report
       doc.br
     end
     
-    def _suite_div_expected_output(test, doc)
+    def _suite_div_expected_output(index, test, doc)
       doc.h4 'Test output'
       if test.test_actual
         doc.div(:class => "row") {
           doc.div(:class => "span3") { doc.text 'Response:' }
         
           doc.div(:class => "span9") {
-            doc.div(:class => "accordion", :id => "accordion_output_test_#{test.name}") {
+            doc.div(:class => "accordion", :id => "accordion_output_test_#{index}") {
               doc.div(:class => "accordion-group") {
                 doc.div(:class => "accordion-heading") {
-                  doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse",  'data-parent' => "#accordion_output_test_#{test.name}", :href => "#collapse_output_test_#{test.name}") {
+                  doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse",  'data-parent' => "#accordion_output_test_#{index}", :href => "#collapse_output_test_#{index}") {
                     doc.text 'Expand / Collapse'
                   }
                 }
-                doc.div(:id => "collapse_output_test_#{test.name}", :class => "accordion-body collapse") {
+                doc.div(:id => "collapse_output_test_#{index}", :class => "accordion-body collapse") {
                   doc.div(:class => "accordion-inner") {
                     doc.pre {
                       doc.text _format_xml(_actual_file test.test_actual)
