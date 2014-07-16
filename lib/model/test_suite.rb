@@ -13,7 +13,7 @@ module Theotokos
         @tests ||= Array.new      
       end
       
-      attr_accessor :source, :wsdl, :service, :tags, :tests
+      attr_accessor :source, :wsdl, :service, :description, :tags, :tests
       
       def validate_model!
         raise Exception, 'WS test model must be provided.' if @source.nil? || @source.empty?
@@ -30,8 +30,8 @@ module Theotokos
       end
       
       def to_hash
-        { :source => @source, :wsdl => @wsdl, :service => @service, :tags => @tags,
-          :tests => ((@tests) ? @tests.map {|t| t.to_hash } : @tests) }
+        { :source => @source, :wsdl => @wsdl, :service => @service, :descriptio => @description,
+          :tags => @tags, :tests => ((@tests) ? @tests.map {|t| t.to_hash } : @tests) }
       end
       
       private
@@ -39,6 +39,7 @@ module Theotokos
         self.source = opt[:source]
         self.wsdl = opt[:wsdl]
         self.service = opt[:service]
+        self.description = opt[:description]
         
         _config_tags opt[:tags]
         @tests = _load_tests opt[:tests]

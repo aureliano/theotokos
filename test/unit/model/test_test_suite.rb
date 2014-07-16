@@ -34,13 +34,14 @@ class TestTestSuite < Test::Unit::TestCase
   def _hash_initialization
     props = {
       :source => '/path/to/test/case/model/file', :wsdl => 'http://path/to/wsdl?wsdl',
-      :service => 'test_service', :tags => ['dev', 'test', 'production']
+      :service => 'test_service', :description => 'some description', :tags => ['dev', 'test', 'production']
     }
     suite = TestSuite.new(props)
     
     assert_equal suite.source, '/path/to/test/case/model/file'
     assert_equal suite.wsdl, 'http://path/to/wsdl?wsdl'
     assert_equal suite.service, 'test_service'
+    assert_equal suite.description, 'some description'
     assert_equal suite.tags, ['dev', 'test', 'production']
     assert_equal suite.tests, []
     
@@ -56,12 +57,14 @@ class TestTestSuite < Test::Unit::TestCase
       suite.source = '/path/to/test/case/model/file'
       suite.wsdl = 'http://path/to/wsdl?wsdl'
       suite.service = 'test_service'
+      suite.description = 'some description'
       suite.tags = ['dev', 'test', 'production']
     end
         
     assert_equal suite.source, '/path/to/test/case/model/file'
     assert_equal suite.wsdl, 'http://path/to/wsdl?wsdl'
     assert_equal suite.service, 'test_service'
+    assert_equal suite.description, 'some description'
     assert_equal suite.tags, ['dev', 'test', 'production']
     assert_equal suite.tests, []
   end

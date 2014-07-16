@@ -16,6 +16,7 @@ module Theotokos
         Model::TestSuite.new do |suite|
           suite.wsdl = hash['wsdl']
           suite.service = hash['service']
+          suite.description = hash['description']
           suite.tags = hash['tags']
           
           suite.tests = hash['tests'].map do |te|

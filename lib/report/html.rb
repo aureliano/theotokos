@@ -234,6 +234,15 @@ module Report
             doc.text suite.model.service
           }
         }
+        
+        doc.div(:class => "row") {
+          doc.div(:class => "span3") {
+            doc.text 'Description:'
+          }
+          doc.div(:class => "span9") {
+            doc.text suite.model.description
+          }
+        }
       }
     end
     
