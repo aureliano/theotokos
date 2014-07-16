@@ -359,11 +359,11 @@ module Report
       
       doc.div(:class => "row") {
         doc.div(:class => "span3") {
-          doc.text 'Bactrace:'
+          doc.text 'Backtrace:'
         }
         doc.div(:class => "span9") {
           doc.pre {
-            doc.text test.error[:backtrace]
+            doc.text _backtrace test.error[:backtrace]
           }
         }
       }
@@ -633,6 +633,14 @@ module Report
     def _format_xml(text)
       text = '' unless text
       Nokogiri::XML(text).to_xml
+    end
+    
+    def _backtrace(backtrace)
+      if backtrace.instance_of? Array
+        backtrace.join("\n")
+      else
+        backtrace.to_s
+      end
     end
   
   end
