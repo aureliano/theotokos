@@ -115,7 +115,7 @@ module Report
         doc.div(:id => "div_tags") {
           doc.div(:class => 'row') {
             doc.div(:class => 'span9') {
-              doc.text ((@tags.nil?) ? '-' : @tags.join(', '))
+              doc.h5 { doc.text ((@tags.nil?) ? '-' : "<< #{@tags.join(', ')} >>") }
             }
           }
         }
