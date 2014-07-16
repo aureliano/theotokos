@@ -37,6 +37,7 @@ module Theotokos
         @test_suite.tests.each do |test|
           @count += 1
           next if !@test_index.nil? && @test_index != @count
+          next unless self.should_execute_test? test
           
           result = {}
           self.before_test test

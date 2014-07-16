@@ -18,8 +18,18 @@ module Theotokos
       def should_execute?
         return true if @tags_input.nil?
         
-        test_suite.tags.each do |tag|
-          return true if @tags_input.include? tag
+        @tags_input.each do |tag|
+          return true if @test_suite.has_tag? tag
+        end
+        
+        false
+      end
+      
+      def should_execute_test?(test)
+        return true if @tags_input.nil?
+        
+        @tags_input.each do |tag|
+          return true if test.has_tag? tag
         end
         
         false

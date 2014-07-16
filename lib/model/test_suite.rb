@@ -21,6 +21,11 @@ module Theotokos
         raise Exception, 'Service name (service to be tested) must be provided.' if @service.nil? || @service.empty?
       end
       
+      def has_tag?(tag)
+        (@tags + @tests.map {|t| t.tags }.flatten).each {|t| return true if t == tag }
+        false
+      end
+      
       def name
         regex = Regexp.new ENV['ws.test.models.path'].sub(/\/$/, '')
         name =@source.sub regex, ''

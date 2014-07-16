@@ -25,6 +25,7 @@ module Theotokos
               t.description = te['description']
               t.input = te['input']
               t.output = te['output']
+              t.tags = te['tags']
               t.ws_security = te['ws-security']
               t.error_expected = te['error_expected']
             end

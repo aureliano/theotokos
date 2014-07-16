@@ -30,6 +30,26 @@ class TestTestSuite < Test::Unit::TestCase
     assert_raise(Exception, 'Service name (service to be tested) must be provided.') { TestSuite.new(props).validate_model! }
   end
   
+  def test_has_tag
+    suite = TestSuite.new do |s|
+      s.tags = [ 'dev', 'ss4']
+      s.tests = [
+        Test.new {|t| t.tags = ["dev", "ss1"] },
+        Test.new {|t| t.tags = ['ss3', 'test', 'ss2'] }
+      ]
+    end
+    
+    assert !suite.has_tag?('dev1')
+    assert !suite.has_tag?('tag')
+    
+    assert suite.has_tag?('dev')
+    assert suite.has_tag?('ss4')
+    assert suite.has_tag?('ss1')
+    assert suite.has_tag?('ss3')
+    assert suite.has_tag?('test')
+    assert suite.has_tag?('ss2')
+  end
+  
   private
   def _hash_initialization
     props = {
