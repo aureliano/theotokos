@@ -281,11 +281,32 @@ module Report
     def _suite_div_tests(suite, doc)
       doc.div(:id => "div_tests") {
         doc.h3 'Test cases'
+        count = 0
         suite.test_results.each do |test|
           doc.div {
             doc.div(:class => "row") {
               doc.div(:class => "alert alert-#{((test.status.success?) ? 'success' : 'error')}") {
-                doc.text "Test - ##{test.name}"
+                text = "Test ##{count += 1}"
+                text << " - #{test.name}" if test.name
+                doc.text text
+              }
+            }
+            
+            doc.div(:class => "row") {
+              doc.div(:class => "span3") {
+                doc.text 'Name:'
+              }
+              doc.div(:class => "span9") {
+                doc.text test.name
+              }
+            }
+            
+            doc.div(:class => "row") {
+              doc.div(:class => "span3") {
+                doc.text 'Description:'
+              }
+              doc.div(:class => "span9") {
+                doc.text test.description
               }
             }
 

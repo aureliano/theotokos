@@ -12,10 +12,11 @@ module Theotokos
         @error_expected = false
       end
     
-      attr_accessor :input, :output, :ws_security, :error_expected, :error
+      attr_accessor :name, :description, :input, :output, :ws_security, :error_expected, :error
       
       def to_hash
-        { :error_expected => @error_expected, :input => @input, :output => @output, :ws_security => @ws_security }
+        { :name => @name, :description => @description, :error_expected => @error_expected,
+          :input => @input, :output => @output, :ws_security => @ws_security }
       end
     
     end

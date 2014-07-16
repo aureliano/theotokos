@@ -7,6 +7,8 @@ class TestTest < Test::Unit::TestCase
   
   def test_read_methods_presence
     test = Test.new
+    assert test.respond_to? 'name'
+    assert test.respond_to? 'description'
     assert test.respond_to? 'input'
     assert test.respond_to? 'output'
     assert test.respond_to? 'ws_security'
@@ -14,6 +16,8 @@ class TestTest < Test::Unit::TestCase
   
   def test_write_methods_presence
     test = Test.new
+    assert test.respond_to? 'name='
+    assert test.respond_to? 'description='
     assert test.respond_to? 'input='
     assert test.respond_to? 'output='
     assert test.respond_to? 'ws_security='

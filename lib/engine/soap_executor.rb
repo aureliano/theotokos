@@ -34,15 +34,16 @@ module Theotokos
       def _execute
         results = []
         @test_suite.tests.each do |test|
-          test_result = TestResult.new
-          result = {}
-          
           @count += 1
           next if !@test_index.nil? && @test_index != @count
           
+          result = {}
           self.before_test test
-          test_result.name = @count
-          test_result.error_expected = test.error_expected
+          test_result = TestResult.new do |t|
+            t.name = test.name
+            t.description = test.description
+            t.error_expected = test.error_expected
+          end
           
           res = SoapNet.send_request :wsdl => @test_suite.wsdl, :ws_config => @ws_config,
             :ws_security => test.ws_security, :service => @test_suite.service, :params => test.input

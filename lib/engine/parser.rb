@@ -21,6 +21,8 @@ module Theotokos
           
           suite.tests = hash['tests'].map do |te|
             Model::Test.new do |t|
+              t.name = te['name']
+              t.description = te['description']
               t.input = te['input']
               t.output = te['output']
               t.ws_security = te['ws-security']
