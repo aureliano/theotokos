@@ -23,4 +23,14 @@ class TestTest < Test::Unit::TestCase
     assert test.respond_to? 'ws_security='
   end
   
+  def test_has_tag
+    test = Test.new {|t| t.tags = ["dev", "ss1"] }
+    
+    assert !test.has_tag?('dev1')
+    assert !test.has_tag?('tag')
+    
+    assert test.has_tag?('dev')
+    assert test.has_tag?('ss1')
+  end
+  
 end  
