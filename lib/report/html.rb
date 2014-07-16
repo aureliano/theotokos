@@ -243,6 +243,15 @@ module Report
             doc.text suite.model.description
           }
         }
+        
+        doc.div(:class => "row") {
+          doc.div(:class => "span3") {
+            doc.text 'Tags:'
+          }
+          doc.div(:class => "span9") {
+            doc.text suite.model.tags.join(', ')
+          }
+        }
       }
     end
     

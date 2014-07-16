@@ -3,7 +3,7 @@ module Theotokos
 
     class Executor
       
-      attr_accessor :test_suite, :test_index, :ws_config, :console_report
+      attr_accessor :test_suite, :test_index, :ws_config, :tags_input, :console_report
       
       protected
       def save_web_service_result(data)
@@ -13,6 +13,16 @@ module Theotokos
       
         File.open(file_name, 'w') {|file| file.write data }
         file_name
+      end
+      
+      def should_execute?
+        return true if @tags_input.nil?
+        
+        test_suite.tags.each do |tag|
+          return true if @tags_input.include? tag
+        end
+        
+        false
       end
       
       def validate_test_execution(expected_output, outcoming_file)

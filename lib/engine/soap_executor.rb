@@ -10,6 +10,7 @@ module Theotokos
       end
       
       def execute
+        return unless self.should_execute?
         @logger.info "Execute Soap Test '#{@test_suite.source}'"
         @logger.info "WSDL: #{@test_suite.wsdl}"
         @logger.info "Service: #{@test_suite.service}"
