@@ -22,7 +22,7 @@ module Report
       if test.test_expectation
         if test.test_expectation['file']
           file = test.test_expectation['file']
-          _append " => File '#{file}'\n#{File.read(format_ws_output_path file)}"
+          _append " => File '#{file}'\n#{File.read(Helper.format_ws_output_path file)}"
           _append " => Status: #{test.status.test_file_status ? 'Passed' : 'Failed'}\n"
         end
         puts

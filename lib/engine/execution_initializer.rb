@@ -19,7 +19,9 @@ module Theotokos
           begin
             model = Parser.yaml_to_test_suite file
           rescue Exception => ex
-            @suites[file] = ExecutionInitializer.error_test_suite_result ex
+            suites << ExecutionInitializer.error_test_suite_result(ex, file)
+            puts "WARN: Error parsing model '#{file}': #{ex}"
+            next
           end
 
           model.source = file
@@ -68,7 +70,7 @@ module Theotokos
         ExecutionInitializer.load_test_models_by_path ENV['ws.test.models.path']
       end
       
-      def self.error_test_suite_result(ex)
+      def self.error_test_suite_result(ex, file)
         TestSuiteResult.new do |r|
           r.model = TestSuite.new do |s|
             s.source = file
@@ -79,7 +81,7 @@ module Theotokos
           r.test_results = [
             TestResult.new do |test|
               test.name = '1'
-              test.status = TestStatus.new :test_file_status => false, :test_text_status => false
+              test.status = TestStatus.new :test_file_status => false, :test_text_status => { :error => true }
               test.error = { :message => ex.to_s, :backtrace => ex.backtrace }
             end
           ]
