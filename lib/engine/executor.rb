@@ -48,14 +48,40 @@ module Theotokos
         end
       end
       
-      def before(&block)
-        @logger.debug 'Playing Before Test'
-        block.call if block_given?
+      def before_suite
+        @logger.debug 'Playing Before Suite'
+        return if HOOKS[:before_suite].nil?
+        
+        HOOKS[:before_suite].each do |block|
+          block.call
+        end
       end
       
-      def after(&block)
+      def after_suite
+        @logger.debug 'Playing After Suite'
+        return if HOOKS[:after_suite].nil?
+        
+        HOOKS[:after_suite].each do |block|
+          block.call
+        end
+      end
+      
+      def before_test
+        @logger.debug 'Playing Before Test'
+        return if HOOKS[:before_test].nil?
+        
+        HOOKS[:before_test].each do |block|
+          block.call
+        end
+      end
+      
+      def after_test
         @logger.debug 'Playing After Test'
-        block.call if block_given?
+        return if HOOKS[:after_test].nil?
+        
+        HOOKS[:after_test].each do |block|
+          block.call
+        end
       end
       
       private

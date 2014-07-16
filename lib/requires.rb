@@ -10,6 +10,7 @@ require File.expand_path  '../../lib/assertion/test_assertion.rb', __FILE__
 require File.expand_path  '../../lib/config/app_config_params.rb', __FILE__
 require File.expand_path  '../../lib/config/app_logger.rb', __FILE__
 require File.expand_path  '../../lib/helper/app_helper.rb', __FILE__
+require File.expand_path  '../../lib/helper/hook_helper.rb', __FILE__
 require File.expand_path '../../lib/engine/execution_initializer.rb', __FILE__
 require File.expand_path '../../lib/engine/parser.rb', __FILE__
 require File.expand_path '../../lib/engine/executor.rb', __FILE__

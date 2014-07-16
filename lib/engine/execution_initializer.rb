@@ -11,6 +11,7 @@ module Theotokos
         raise Exception, 'Execution command params must not be empty.' unless @command
         suites = []
         console_report = Reporter.create_reporter(:console) if @command.report_formats.include? :console
+        ExecutionInitializer._before_app
         
         @command.test_files.each do |file|
           model = nil
@@ -40,6 +41,7 @@ module Theotokos
           t.calculate_totals
         end
         
+        ExecutionInitializer._after_app
         console_report.print @test_app_result unless console_report.nil?
       end
     
@@ -80,6 +82,22 @@ module Theotokos
         end
       end
       
+      def self._before_app
+        return if HOOKS[:before_app].nil?
+        
+        HOOKS[:before_app].each do |block|
+          block.call
+        end
+      end
+      
+      def self._after_app
+        return if HOOKS[:after_app].nil?
+        
+        HOOKS[:after_app].each do |block|
+          block.call
+        end
+      end
+            
       attr_accessor :command, :ws_config
       attr_reader :test_app_result
     

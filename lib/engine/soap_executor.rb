@@ -14,9 +14,9 @@ module Theotokos
         @logger.info "WSDL: #{@test_suite.wsdl}"
         @logger.info "Service: #{@test_suite.service}"
         
-        before      
+        self.before_suite
         test_suite_result = _execute_test_suite      
-        after
+        self.after_suite
         
         test_suite_result
       end
@@ -40,6 +40,7 @@ module Theotokos
           @count += 1
           next if !@test_index.nil? && @test_index != @count
           
+          self.before_test
           test_result.name = @count
           test_result.error_expected = test.error_expected
           
@@ -52,6 +53,7 @@ module Theotokos
             test_result.status = TestStatus.new :error => true
             results << test_result
             
+            self.after_test
             @console_report.print test_result unless @console_report.nil?
             next
           elsif res[:success] == true && test_result.error_expected
@@ -59,6 +61,7 @@ module Theotokos
             test_result.status = TestStatus.new :error => true
             results << test_result
             
+            self.after_test
             @console_report.print test_result unless @console_report.nil?
             next
           end
@@ -73,6 +76,7 @@ module Theotokos
           end
           
           results << test_result
+          self.after_test
           @console_report.print test_result unless @console_report.nil?
         end
         
