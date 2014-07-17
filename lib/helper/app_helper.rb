@@ -82,6 +82,13 @@ module Theotokos
         f = file.sub Regexp.new("^#{ENV[key]}"), ''
         File.join(ENV[key], f)
       end
+      
+      def load_support_files
+        Dir.glob(File.join(Dir.pwd, "support", "**", "*.rb"))
+          .sort_by {|file| file.scan(File::SEPARATOR).size }
+          .each {|file| require file }
+      end
+      
     end
 
   end

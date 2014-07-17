@@ -47,5 +47,3 @@ def after_test(&block)
     HOOKS[:after_test] << block
   end
 end
-
-Dir.glob(File.join(Dir.pwd, "support", "**", "*.rb")).sort_by {|file| file.scan(File::SEPARATOR).size }.each {|file| require file }

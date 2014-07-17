@@ -12,7 +12,9 @@ module Theotokos
         puts "\n >>> Tags: #{@command.tags.join(', ')}\n\n" unless (@command.tags.nil? || @command.tags.empty?)
         suites = []
         console_report = Reporter.create_reporter(:console) if @command.report_formats.include? :console
+        
         ExecutionInitializer._before_app
+        Helper.load_support_files
         
         @command.test_files.each do |file|
           model = nil
