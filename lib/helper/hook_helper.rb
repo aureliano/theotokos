@@ -48,4 +48,4 @@ def after_test(&block)
   end
 end
 
-Dir.glob(File.join(Dir.pwd, "support", "**", "*.rb")).each {|file| require file }
+Dir.glob(File.join(Dir.pwd, "support", "**", "*.rb")).sort_by {|f| f.scan(File::SEPARATOR).size }
