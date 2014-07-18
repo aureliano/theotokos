@@ -115,7 +115,7 @@ module Report
         doc.div(:id => "div_tags") {
           doc.div(:class => 'row') {
             doc.div(:class => 'span9') {
-              doc.h5 { doc.text ((@tags.nil?) ? '-' : "<< #{@tags.join(', ')} >>") }
+              doc.h5 { doc.text ((@tags.nil? || @tags.empty?) ? '-' : "<< #{@tags.join(', ')} >>") }
             }
           }
         }
@@ -249,7 +249,8 @@ module Report
             doc.text 'Tags:'
           }
           doc.div(:class => "span9") {
-            doc.text suite.model.tags.join(', ')
+            tags = (suite.model.tags.nil? || suite.model.tags.empty?) ? '-' : suite.model.tags.join(', ')
+            doc.text tags
           }
         }
       }
@@ -325,7 +326,7 @@ module Report
                 doc.text 'Tags:'
               }
               doc.div(:class => "span9") {
-                txt = ((test.tags.nil?) ? '' : test.tags.join(', '))
+                txt = ((test.tags.nil? || test.tags.empty?) ? '-' : test.tags.join(', '))
                 doc.text txt
               }
             }
