@@ -46,11 +46,18 @@ module Theotokos
             t.description = test.description
             t.error_expected = test.error_expected
             t.tags = test.tags
+            t.skip = test.skip
           end
           
+          test_result.test_expectation = test.output
+          if test.skip
+            @logger.warn "Skiping test '#{test.name}'"
+            results << test_result
+            next
+          end
+            
           res = SoapNet.send_request :wsdl => @test_suite.wsdl, :ws_config => @ws_config,
             :ws_security => test.ws_security, :service => @test_suite.service, :params => test.input
-          test_result.test_expectation = test.output
           
           if res[:success] == false && !test_result.error_expected
             test_result.error = { :message => 'Send request failure', :backtrace => res[:xml] }
@@ -72,7 +79,8 @@ module Theotokos
           
           test_result.test_actual = save_web_service_result res[:xml]
           test_res = validate_test_execution test.output, test_result.test_actual
-          if test_res.instance_of? Model::TestStatus
+
+          if test_res.instance_of? Theotokos::Model::TestStatus
             test_result.status = test_res
           else
             test_result.error = { :message => test_res.to_s, :backtrace => test_res.backtrace }

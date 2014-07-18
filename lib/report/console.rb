@@ -19,7 +19,7 @@ module Report
       _append "Tags: #{test.tags.join(', ')}" if test.tags
       _append "Test expectations."
       
-      if test.test_expectation
+      if test.test_expectation && !test.status.nil?
         if test.test_expectation['file']
           file = test.test_expectation['file']
           _append " => File '#{file}'\n#{File.read(Helper.format_ws_output_path file)}"
@@ -51,7 +51,7 @@ module Report
         _append (test.test_actual) ? File.read(test.test_actual) : ''
       end
       
-      _append "\n- Test case status: #{test.status.success? ? 'Success' : 'Fail'}"
+      _append "\n- Test case status: #{((test.status.nil?) ? 'Skipped' : (test.status.success? ? 'Success' : 'Fail'))}"
       _append "\n------\n\n"
       
       @output

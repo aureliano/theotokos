@@ -12,6 +12,9 @@ class TestTest < Test::Unit::TestCase
     assert test.respond_to? 'input'
     assert test.respond_to? 'output'
     assert test.respond_to? 'ws_security'
+    assert test.respond_to? 'tags'
+    assert test.respond_to? 'error_expected'
+    assert test.respond_to? 'skip'
   end
   
   def test_write_methods_presence
@@ -21,6 +24,9 @@ class TestTest < Test::Unit::TestCase
     assert test.respond_to? 'input='
     assert test.respond_to? 'output='
     assert test.respond_to? 'ws_security='
+    assert test.respond_to? 'tags='
+    assert test.respond_to? 'error_expected='
+    assert test.respond_to? 'skip='
   end
   
   def test_has_tag

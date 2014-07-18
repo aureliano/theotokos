@@ -14,6 +14,8 @@ module Net
         xml = response.xml
         success = true
       rescue Exception => ex
+        return { :success => false, :xml => ex.http.body } if ex.instance_of? Savon::SOAPFault      
+      
         xml = Nokogiri::XML::Builder.new do |xml|
           xml.error do
             xml.message ex.to_s

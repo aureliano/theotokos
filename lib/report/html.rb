@@ -294,7 +294,8 @@ module Report
         suite.test_results.each do |test|
           doc.div {
             doc.div(:class => "row") {
-              doc.div(:class => "alert alert-#{((test.status.success?) ? 'success' : 'error')}") {
+              css_class = (((test.status.nil?) ? 'info' : ((test.status.success?) ? 'success' : 'error')))
+              doc.div(:class => "alert alert-#{css_class}") {
                 text = "Test ##{count += 1}"
                 text << " - #{test.name}" if test.name
                 doc.text text
@@ -334,12 +335,16 @@ module Report
                 doc.text 'Status:'
               }
               doc.div(:class => "span9") {
-                doc.text ((test.status.success?) ? 'Passed' : 'Failed')
+                if test.status.nil?
+                  doc.text 'Skipped'
+                else
+                  doc.text ((test.status.success?) ? 'Passed' : 'Failed')
+                end
               }
             }
           }
           
-          _suite_div_error test, doc if (test.status.error? && !test.error.nil?)
+          _suite_div_error test, doc if (!test.status.nil? && test.status.error? && !test.error.nil?)
           _suite_div_expectations count, test, doc
           _suite_div_expected_output count, test, doc
         end
@@ -425,8 +430,6 @@ module Report
     
     def _suite_div_text_expectations_equals(index, test, doc)
       return unless test.test_expectation['text']['equals']
-      status = ((test.status.test_text_status.nil?) ? 'Not performed' : test.status.test_text_status[:equals])
-      status = status ? 'Passed' : 'Failed' unless test.status.test_text_status.nil?
             
       doc.div(:class => "row") {
         doc.div(:class => "span3") {
@@ -457,7 +460,7 @@ module Report
           doc.text 'Status:'
         }
         doc.div(:class => "span9") {
-          doc.text status
+          doc.text _format_test_status(test)
         }
       }
       
@@ -466,8 +469,6 @@ module Report
     
     def _suite_div_text_expectations_contains(index, test, doc)
       return unless test.test_expectation['text']['contains']
-      status = ((test.status.test_text_status.nil?) ? 'Not performed' : test.status.test_text_status[:contains])
-      status = status ? 'Passed' : 'Failed' unless test.status.test_text_status.nil?
             
       doc.div(:class => "row") {
         doc.div(:class => "span3") {
@@ -498,7 +499,7 @@ module Report
           doc.text 'Status:'
         }
         doc.div(:class => "span9") {
-          doc.text status
+          doc.text _format_test_status(test)
         }
       }
       
@@ -507,8 +508,6 @@ module Report
     
     def _suite_div_text_expectations_not_contains(index, test, doc)
       return unless test.test_expectation['text']['not_contains']
-      status = ((test.status.test_text_status.nil?) ? 'Not performed' : test.status.test_text_status[:not_contains])
-      status = status ? 'Passed' : 'Failed' unless test.status.test_text_status.nil?
             
       doc.div(:class => "row") {
         doc.div(:class => "span3") {
@@ -539,7 +538,7 @@ module Report
           doc.text 'Status:'
         }
         doc.div(:class => "span9") {
-          doc.text status
+          doc.text _format_test_status(test)
         }
       }
       
@@ -548,8 +547,6 @@ module Report
     
     def _suite_div_text_expectations_regex(index, test, doc)
       return unless test.test_expectation['text']['regex']
-      status = ((test.status.test_text_status.nil?) ? 'Not performed' : test.status.test_text_status[:regex])
-      status = status ? 'Passed' : 'Failed' unless test.status.test_text_status.nil?
             
       doc.div(:class => "row") {
         doc.div(:class => "span3") {
@@ -580,7 +577,7 @@ module Report
           doc.text 'Status:'
         }
         doc.div(:class => "span9") {
-          doc.text status
+          doc.text _format_test_status(test)
         }
       }
       
@@ -640,6 +637,16 @@ module Report
         backtrace.join("\n")
       else
         backtrace.to_s
+      end
+    end
+    
+    def _format_test_status(test)
+      if test.skip
+        'Skipped'
+      elsif test.status.test_text_status.nil?
+        'Not performed'
+      else
+        ((test.status.test_text_status[:contains])) ? 'Passed' : 'Failed'
       end
     end
   

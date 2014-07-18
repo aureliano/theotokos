@@ -4,23 +4,23 @@ module Theotokos
     class Test
     
       def initialize
+        @error_expected = @skip = false
         yield self if block_given?
         
         @tags ||= []
         @input ||= {}
         @output ||= {}
         @ws_security ||= {}
-        @error_expected = false
         
         _config_tags @tags
         _validation
       end
     
-      attr_accessor :name, :description, :tags, :input, :output, :ws_security, :error_expected, :error
+      attr_accessor :name, :description, :tags, :input, :output, :ws_security, :error_expected, :error, :skip
       
       def to_hash
         { :name => @name, :description => @description, :error_expected => @error_expected,
-          :tags => @tags, :input => @input, :output => @output, :ws_security => @ws_security }
+          :tags => @tags, :input => @input, :output => @output, :ws_security => @ws_security, :skip => @skip }
       end
       
       def has_tag?(tag)
