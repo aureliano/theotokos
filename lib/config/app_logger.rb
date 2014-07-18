@@ -16,7 +16,7 @@ module Theotokos
       
       def self.add_rolling_file_logger
         dir = File.dirname ENV['logger.rolling_file.file']
-        Dir.mkdir dir unless File.exist? dir
+        FileUtils.mkdir_p dir unless File.exist? dir
         
         Logging.appenders.rolling_file(
           ENV['logger.rolling_file.file'],
