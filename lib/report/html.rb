@@ -2,6 +2,10 @@ module Report
 
   class Html < Reporter
   
+    def initialize
+      config_locale
+    end
+    
     def print(data)
       return if ENV['ENVIRONMENT'] == 'test'
       Dir.mkdir 'tmp' unless File.exist? 'tmp'
@@ -55,7 +59,7 @@ module Report
     
     def _index_head(doc)
       doc.meta 'http-equiv' => "Content-Type", :content => "text/html; charset=utf-8"
-      doc.title 'Web Service Tests Report'
+      doc.title @locale['index.page.title']
       doc.link :href => "css/bootstrap.min.css", :media => "screen", :rel => "stylesheet", :type => "text/css"
       doc.script :src => 'js/Chart.min.js'
       
@@ -64,8 +68,8 @@ module Report
     def _index_body(doc)
       doc.div(:class => 'container') {
         doc.div(:id => "div_capa", :class => "well", :align => "center") {
-          doc.h2 'Web Service Tests Report'
-          doc.p "Report date #{@app.date_report}"
+          doc.h2 @locale['index.title']
+          doc.text @locale['index.subtitle'].to_s.sub(/<%\s*report_date\s*%>/, @app.date_report.strftime(@locale['date.pattern']))
         }
         _index_div_result doc
         _index_div_introduction doc
@@ -77,28 +81,28 @@ module Report
     def _index_div_result(doc)
       if @app.success?
         doc.div(:class => "alert alert-success") {
-          doc.h3 'Success! All tests have passed'
+          doc.h3 @locale['index.success.label']
         }
       else
         doc.div(:class => "alert alert-error") {
-          doc.h3 "Failure! (total failures) broken test(s)"
+          doc.h3 @locale['index.error.label'].to_s.sub(/<%\s*total_failures\s*%>/, @app.total_failures.to_s)
         }
       end
     end
     
     def _index_div_introduction(doc)
       doc.div(:id => "div_introduction") {
-        doc.h3 "1 - Overview"
-        doc.text "Project of automated testing of web service. " +
-          "Actually #{@app.suites.size} test suite(s) is(are) implemented, " +
-          "totaling #{@app.total_test_cases} test case(s)."
+        doc.h3 "1 - #{@locale['index.overview.title']}"
+        doc.text @locale['index.overview.summary'].to_s
+          .sub(/<%\s*total_test_suites\s*%>/, @app.suites.size.to_s)
+          .sub(/<%\s*total_test_cases\s*%>/, @app.total_test_cases.to_s)
       }
     end
     
     def _index_div_metadata(doc)
       doc.div(:id => "div_meta-data") {
-        doc.h3 '2 - Metadata'
-        doc.h4 '2.1 - WS Config'
+        doc.h3 "2 - #{@locale['index.metadata.title']}"
+        doc.h4 "2.1 - #{@locale['index.metadata.ws_config.title']}"
         doc.div(:id => "div_ws_config") {
           WsConfig.ws_attributes.each do |p|
             doc.div(:class => "row") {
@@ -111,7 +115,7 @@ module Report
             }
           end
         }
-        doc.h4 '2.2 - Tags'
+        doc.h4 "2.2 - #{@locale['index.metadata.tags.title']}"
         doc.div(:id => "div_tags") {
           doc.div(:class => 'row') {
             doc.div(:class => 'span9') {
@@ -124,18 +128,18 @@ module Report
     
     def _index_div_report(doc)
       doc.div(:id => "div_report") {
-        doc.h3 '3 - Report'
-        doc.h4 '3.1 - Aggregated data'
+        doc.h3 "3 - #{@locale['index.report.title']}"
+        doc.h4 "3.1 - #{@locale['index.report.agregated_data.title']}"
         doc.table(:class => "table table-bordered table-hover") {
           doc.theader {
             doc.tr {
-              doc.th(:rowspan => "2") { doc.text 'Test Suites' }
-              doc.th(:colspan => "3") { doc.text 'Test Cases' }
+              doc.th(:rowspan => "2") { doc.text @locale['index.test_suites.label'] }
+              doc.th(:colspan => "3") { doc.text @locale['index.test_cases.label'] }
             }
             doc.tr {
-              doc.th 'Success'
-              doc.th 'Failures'
-              doc.th 'Total'
+              doc.th @locale['index.success.label']
+              doc.th @locale['index.failures.label']
+              doc.th @locale['index.total.label']
             }
           }
           doc.tbody {
@@ -166,8 +170,8 @@ module Report
           }
         }
         
-        doc.h4 '3.2 - Statistics'
-        doc.h5 '3.2.1 - Success x Failures'
+        doc.h4 "3.2 - #{@locale['index.statistics.title']}"
+        doc.h5 "3.2.1 - #{@locale['index.statistics.success_failures.title']}"
         doc.canvas(:id => "success_failures_chart", :width => "250", :height => "250")
         doc.script {
           doc.text ChartFactory.pie_chart(:id => 'success_failures_chart', :total_success => @app.total_success, :total_failures => @app.total_failures)
@@ -192,15 +196,15 @@ module Report
     
     def _suite_head(doc)
       doc.meta 'http-equiv' => "Content-Type", :content => "text/html; charset=utf-8"
-      doc.title 'Test suite result'
+      doc.title @locale['suite.page.title']
       doc.link :href => "css/bootstrap.min.css", :media => "screen", :rel => "stylesheet", :type => "text/css"
     end
     
     def _suite_body(suite, doc)
       doc.div(:class => "container") {
         doc.div(:id => "div_capa", :class => "well", :align => "center") {
-          doc.h2 'Test suite report'
-          doc.text "Report date #{@app.date_report}"
+          doc.h2 @locale['suite.title']
+          doc.text @locale['suite.subtitle'].to_s.sub(/<%\s*report_date\s*%>/, @app.date_report.strftime(@locale['date.pattern']))
         }
         
         _suite_div_introduction suite, doc
@@ -214,12 +218,13 @@ module Report
     def _suite_div_introduction(suite, doc)
       doc.div(:id => "div_introducao") {
         doc.div(:class => "alert alert-#{((suite.success?) ? 'success' : 'error')}") {
-          doc.h3 "Test suite: #{suite.model.source.sub(/^#{Regexp.new(ENV['ws.test.models.path'])}\/?/, '')}"
+          doc.h3 @locale['suite.source.label'].to_s
+            .sub(/<%\s*source\s*%>/, suite.model.source.sub(/^#{Regexp.new(ENV['ws.test.models.path'])}\/?/, ''))
         }
         
         doc.div(:class => "row") {
           doc.div(:class => "span3") {
-            doc.text 'WSDL:'
+            doc.text @locale['suite.wsdl.label']
           }
           doc.div(:class => "span9") {
             doc.text suite.model.wsdl
@@ -228,7 +233,7 @@ module Report
         
         doc.div(:class => "row") {
           doc.div(:class => "span3") {
-            doc.text 'Service:'
+            doc.text @locale['suite.service.label']
           }
           doc.div(:class => "span9") {
             doc.text suite.model.service
@@ -237,7 +242,7 @@ module Report
         
         doc.div(:class => "row") {
           doc.div(:class => "span3") {
-            doc.text 'Description:'
+            doc.text @locale['suite.description.label']
           }
           doc.div(:class => "span9") {
             doc.text suite.model.description
@@ -246,7 +251,7 @@ module Report
         
         doc.div(:class => "row") {
           doc.div(:class => "span3") {
-            doc.text 'Tags:'
+            doc.text @locale['suite.tags.label']
           }
           doc.div(:class => "span9") {
             tags = (suite.model.tags.nil? || suite.model.tags.empty?) ? '-' : suite.model.tags.join(', ')
@@ -258,10 +263,10 @@ module Report
     
     def _suite_div_overview(suite, doc)
       doc.div(:id => "div_overview") {
-        doc.h3 'Overview'
+        doc.h3 @locale['suite.overview.title']
         doc.div(:class => "row") {
           doc.div(:class => 'span3') {
-            doc.text 'Test cases'
+            doc.text @locale['suite.test_cases.label']
           }
           doc.div(:class => 'span9') {
             suite.test_results.size
@@ -270,7 +275,7 @@ module Report
         
         doc.div(:class => "row") {
           doc.div(:class => "span3") {
-            doc.text 'Success:'
+            doc.text @locale['suite.success.label']
           }
           doc.div(:class => "span9") {
             doc.text suite.total_success
@@ -279,7 +284,7 @@ module Report
         
         doc.div(:class => "row") {
           doc.div(:class => "span3") {
-            doc.text 'Falha:'
+            doc.text @locale['suite.failures.label']
           }
           doc.div(:class => "span9") {
             doc.text suite.total_failures
@@ -297,15 +302,14 @@ module Report
             doc.div(:class => "row") {
               css_class = (((test.status.nil?) ? 'info' : ((test.status.success?) ? 'success' : 'error')))
               doc.div(:class => "alert alert-#{css_class}") {
-                text = "Test ##{count += 1}"
-                text << " - #{test.name}" if test.name
+                text = "#{count += 1} - #{@locale['suite.test.name.value'].to_s.sub(/<%\s*name\s*%>/, '#'+test.name.to_s)}"
                 doc.text text
               }
             }
             
             doc.div(:class => "row") {
               doc.div(:class => "span3") {
-                doc.text 'Name:'
+                doc.text @locale['suite.test.name.label']
               }
               doc.div(:class => "span9") {
                 doc.text test.name
@@ -314,7 +318,7 @@ module Report
             
             doc.div(:class => "row") {
               doc.div(:class => "span3") {
-                doc.text 'Description:'
+                doc.text @locale['suite.test.description.label']
               }
               doc.div(:class => "span9") {
                 doc.text test.description
@@ -323,7 +327,7 @@ module Report
             
             doc.div(:class => "row") {
               doc.div(:class => "span3") {
-                doc.text 'Tags:'
+                doc.text @locale['suite.test.tags.label']
               }
               doc.div(:class => "span9") {
                 txt = ((test.tags.nil? || test.tags.empty?) ? '-' : test.tags.join(', '))
@@ -333,13 +337,13 @@ module Report
 
             doc.div(:class => "row") {
               doc.div(:class => "span3") {
-                doc.text 'Status:'
+                doc.text @locale['suite.test.status.label']
               }
               doc.div(:class => "span9") {
                 if test.status.nil?
-                  doc.text 'Skipped'
+                  doc.text @locale['suite.test.status.skipped']
                 else
-                  doc.text ((test.status.success?) ? 'Passed' : 'Failed')
+                  doc.text ((test.status.success?) ? @locale['suite.test.status.passed'] : @locale['suite.test.status.failed'])
                 end
               }
             }

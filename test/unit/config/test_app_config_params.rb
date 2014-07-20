@@ -25,6 +25,11 @@ class TestAppConfigParams < Test::Unit::TestCase
     AppConfigParams.load_app_config_params
     
     assert_equal ENV['ws.config.path'], 'resources/config/ws-config.yml'
+    assert_equal ENV['ws.test.models.path'], 'resources/ws-test-models'
+    assert_equal ENV['ws.test.output.files.path'], 'resources/outputs'
+    assert_equal ENV['ws.test.reports.locales.path'], 'resources/locales'
+    assert_equal ENV['ws.test.reports.locale'], 'en'
+    assert_equal ENV['ws.test.reports.path'], 'tmp/reports'
   end
   
 end

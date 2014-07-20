@@ -15,10 +15,23 @@ module Report
       end
     end
     
-    attr_accessor :data
+    attr_accessor :data, :locale
     
     def print
       raise Exception, 'Not supported operation for ' + self.class.name
+    end
+    
+    protected
+    def config_locale
+      logger = AppLogger.create_logger self
+      logger.info "Localizing report to #{ENV['ws.test.reports.locale']} idiom"
+      
+      if ENV['ws.test.reports.locale'] == 'en'
+        logger.debug 'Loading default locale: en'
+        @locale = YAML.load_file File.expand_path('../default_locale', __FILE__)
+      else
+        @locale = YAML.load_file File.join(ENV['ws.test.reports.locales.path'], ENV['ws.test.reports.locale'])
+      end
     end
   
   end

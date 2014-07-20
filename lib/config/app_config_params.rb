@@ -8,6 +8,8 @@ module Theotokos
         ENV['ws.config.path'] = params['ws.config.path'] ||= 'resources/config/ws-config.yml'
         ENV['ws.test.models.path'] = params['ws.test.models.path'] ||= 'resources/ws-test-models'
         ENV['ws.test.output.files.path'] = params['ws.test.output.files.path'] ||= 'resources/outputs'
+        ENV['ws.test.reports.locales.path'] = params['ws.test.reports.locales.path'] ||= 'resources/locales'
+        ENV['ws.test.reports.locale'] = params['ws.test.reports.locale'] ||= 'en'
         ENV['ws.test.reports.path'] = params['ws.test.reports.path'] ||= 'tmp/reports'
         ENV['logger.stdout.level'] = params['logger.stdout.level'] ||= 'info'
         ENV['logger.stdout.layout.pattern'] = params['logger.stdout.layout.pattern'] ||= '[%d] %-5l -- %c : %m\n'

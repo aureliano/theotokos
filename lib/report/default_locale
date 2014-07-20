@@ -1,0 +1,62 @@
+date.pattern: '%Y-%m-%d %l:%M:%S %p'
+
+index.page.title: Web Service Tests Report
+index.title: Web Service Tests Report
+index.subtitle: Report date <% report_date %>
+index.success.label: Success! All tests have passed
+index.error.label: Failure! <% total_failures %> broken test(s)
+index.overview.title: Overview
+index.overview.summary: Project of automated testing of web service. Actually <% total_test_suites %> test suite(s) is(are) implemented totaling <% total_test_cases %> test case(s).
+index.metadata.title: Metadata
+index.metadata.ws_config.title: WS Config
+index.metadata.tags.title: Tags
+index.report.title: Report
+index.report.agregated_data.title: Aggregated data
+index.test_suites.label: Test Suites
+index.test_cases.label: Test Cases
+index.success.label: Success
+index.failures.label: Failures
+index.total.label: Total
+index.statistics.title: Statistics
+index.statistics.success_failures.title: Success x Failures
+
+suite.page.title: Test suite result
+suite.title: Test suite report
+suite.subtitle: Report date <% report_date %>
+suite.source.label: 'Test suite: <% source %>'
+suite.wsdl.label: 'WSDL:'
+suite.service.label: 'Service:'
+suite.description.label: 'Description:'
+suite.tags.label: 'Tags:'
+suite.overview.title: 'Overview'
+suite.test_cases.label: 'Test cases:'
+suite.success.label: 'Success:'
+suite.failures.label: 'Failures:'
+suite.test_cases.title: 'Test cases'
+suite.test.name.label: 'Name:'
+suite.test.name.value: 'Test <% name %>'
+suite.test.description.label: 'Description:'
+suite.test.tags.label: 'Tags:'
+suite.test.status.label: 'Status:'
+suite.test.status.skipped: 'Skipped'
+suite.test.status.passed: 'Passed'
+suite.test.status.failed: 'Failed'
+suite.test.error.title: 'Error'
+suite.test.error.message: 'Message:'
+suite.test.error.backtrace: 'Backtrace:'
+suite.test.test_expectation.title: 'Test expectations:'
+suite.test.test_expectation.file.label: 'File:'
+suite.test.test_expectation.file.status.label: 'Status:'
+suite.test.test_expectation.text_equals.label: 'Text equals:'
+suite.test.test_expectation.text_equals.status.label: 'Status:'
+suite.test.test_expectation.text_contains.label: 'Text contains:'
+suite.test.test_expectation.text_contains.status.label: 'Status:'
+suite.test.test_expectation.text_not_contains.label: 'Text not contains:'
+suite.test.test_expectation.text_not_contains.status.label: 'Status:'
+suite.test.test_expectation.text_regex.label: 'Text regular expression:'
+suite.test.test_expectation.text_regex.status.label: 'Status:'
+sutie.test.test_output.title: 'Test output:'
+sutie.test.test_output.response.label: 'Response:'
+
+suite.data.expand: 'Expand'
+suite.data.collapse: 'Collapse'
