@@ -23,11 +23,10 @@ module Report
     
     protected
     def config_locale
-      logger = AppLogger.create_logger self
-      logger.info "Localizing report to #{ENV['ws.test.reports.locale']} idiom"
+      puts "Localizing report to '#{ENV['ws.test.reports.locale']}' idiom"
       
       if ENV['ws.test.reports.locale'] == 'en'
-        logger.debug 'Loading default locale: en'
+        puts 'Loading default locale: en'
         @locale = YAML.load_file File.expand_path('../default_locale', __FILE__)
       else
         @locale = YAML.load_file File.join(ENV['ws.test.reports.locales.path'], ENV['ws.test.reports.locale'])
