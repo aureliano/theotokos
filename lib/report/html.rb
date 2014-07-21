@@ -299,7 +299,7 @@ module Report
     
     def _suite_div_tests(suite, doc)
       doc.div(:id => "div_tests") {
-        doc.h3 'Test cases'
+        doc.h3 @locale['suite.test_cases.title']
         count = 0
         suite.test_results.each do |test|
           doc.div {

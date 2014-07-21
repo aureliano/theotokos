@@ -38,6 +38,8 @@ module Report
           @locale = YAML.load_file File.join(ENV['ws.test.reports.locales.path'], ENV['ws.test.reports.locale'])
         end
       end
+      
+      _config_default_values unless @locale.instance_of? Hash
     end
     
     private
@@ -53,6 +55,14 @@ module Report
       else
         YAML.load_file default_locale_file
       end
+    end
+    
+    def _config_default_values
+      @locale = {
+        'date.pattern' => '%Y-%m-%d %l:%M:%S %p',
+        'suite.data.expand' => '+',
+        'suite.data.collapse' => '-'
+      }
     end
   
   end
