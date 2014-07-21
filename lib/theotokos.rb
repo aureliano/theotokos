@@ -9,17 +9,19 @@ module Theotokos
       
       AppConfigParams.load_app_config_params unless ENV['app.config.params.loaded'] == 'true'
       AppLogger.add_stdout_logger
+      AppLogger.add_rolling_file_logger if AppConfigParams.rolling_file_logger_defined?
+      @logger = AppLogger.create_logger self
     end
     
     attr_accessor :execution, :ws_config
     attr_reader :test_app_result
     
-    def execute      
-      logger.info 'Initialize WS test application...'
-      logger.info "Mapping test models in #{((@execution.execution_path) ? @execution.execution_path : ENV['ws.test.models.path'])}"
+    def execute
+      @logger.debug ' >>>>>>>>>>>>> Initialize WS test application...'
+      @logger.info "Mapping test models in #{((@execution.execution_path) ? @execution.execution_path : ENV['ws.test.models.path'])}"
       
       @execution.test_files = ExecutionInitializer.load_test_models @execution.execution_path
-      logger.debug "Got test models: #{@execution.test_files.join(', ')}"
+      @logger.debug "Got test models: #{@execution.test_files.join(', ')}"
       
       _execute
     end
@@ -33,15 +35,9 @@ module Theotokos
       end
     end
     
-    def logger
-      return @log if @log
-      @log = AppLogger.create_logger self
-      @log
-    end
-    
     private
     def _execute
-      logger.info 'Initialize executors'
+      @logger.info 'Initialize executors'
       init_time = Time.now
       
       main_executor = ExecutionInitializer.new do |e|

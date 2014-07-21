@@ -21,6 +21,10 @@ module Theotokos
         ENV['app.config.params.loaded'] = 'true'
       end
       
+      def self.rolling_file_logger_defined?
+        !(ENV['logger.rolling_file.level'].nil? && ENV['logger.rolling_file.file'].nil?)
+      end
+      
       def self._get_config_hash
         if ENV['ENVIRONMENT'] == 'test'
           ((ENV['app.cfg.path']) ? YAML.load_file(ENV['app.cfg.path']) : {})        
