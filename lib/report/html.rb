@@ -4,6 +4,7 @@ module Report
   
     def initialize
       config_locale
+      @logger = AppLogger.create_logger self
     end
     
     def print(data)
@@ -18,10 +19,11 @@ module Report
       
       file = "#{ENV['ws.test.reports.path']}/index.html"
       File.open(file, 'w') {|file| file.write _generate_index }
-      puts " -- HTML report saved to #{file}" unless ENV['ENVIRONMENT'] == 'test'
+      @logger.info " -- HTML report saved to #{file}" unless ENV['ENVIRONMENT'] == 'test'
       
       @app.suites.each do |suite|
         file = "#{ENV['ws.test.reports.path']}/#{suite.model.name}.html"
+        @logger.debug " -> Save HTML suite page for '#{suite.model.name}' to '#{file}'"
         File.open(file, 'w') {|file| file.write _generate_suite suite }
       end
       
@@ -36,11 +38,13 @@ module Report
       css_path = "#{ENV['ws.test.reports.path']}/css"
       Dir.mkdir css_path unless File.exist? css_path
       
+      @logger.debug "Copy stylesheets to #{css_path}"
       FileUtils.cp "#{html_path}/bootstrap.min.css", css_path
       
       js_path = "#{ENV['ws.test.reports.path']}/js"
       Dir.mkdir js_path unless File.exist? js_path
       
+      @logger.debug "Copy javascripts to #{js_path}"
       FileUtils.cp "#{html_path}/jquery.min.js", js_path
       FileUtils.cp "#{html_path}/bootstrap-collapse.js", js_path
       FileUtils.cp "#{html_path}/Chart.min.js", js_path
