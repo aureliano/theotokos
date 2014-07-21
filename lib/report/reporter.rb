@@ -53,7 +53,13 @@ module Report
         @logger.debug "Loading defaul locale config file"
         YAML.load_file File.expand_path('../default_locale', __FILE__)
       else
-        YAML.load_file default_locale_file
+        begin
+          YAML.load_file default_locale_file
+        rescue Exception => ex
+          @logger.error ex
+          @logger.warn "Loading defaul locale config file"
+          YAML.load_file File.expand_path('../default_locale', __FILE__)
+        end
       end
     end
     
