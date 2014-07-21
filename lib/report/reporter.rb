@@ -39,7 +39,8 @@ module Report
         end
       end
       
-      _config_default_values unless @locale.instance_of? Hash
+      @locale = Hash.new unless @locale.instance_of? Hash
+      _config_default_values
     end
     
     private
@@ -54,6 +55,7 @@ module Report
         YAML.load_file File.expand_path('../default_locale', __FILE__)
       else
         begin
+          @logger.info "Loading custom locale file '#{default_locale_file}'"
           YAML.load_file default_locale_file
         rescue Exception => ex
           @logger.error ex
@@ -64,11 +66,9 @@ module Report
     end
     
     def _config_default_values
-      @locale = {
-        'date.pattern' => '%Y-%m-%d %l:%M:%S %p',
-        'suite.data.expand' => '+',
-        'suite.data.collapse' => '-'
-      }
+      @locale['date.pattern'] ||= '%Y-%m-%d %l:%M:%S %p'
+      @locale['suite.data.expand'] ||= '+'
+      @locale['suite.data.collapse'] ||= '-'
     end
   
   end
