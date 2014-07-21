@@ -357,10 +357,10 @@ module Report
     end
     
     def _suite_div_error(test, doc)
-      doc.h4 'Error'
+      doc.h4 @locale['suite.test.error.title']
       doc.div(:class => "row") {
         doc.div(:class => "span3") {
-          doc.text 'Message:'
+          doc.text @locale['suite.test.error.message.label']
         }
         doc.div(:class => "span9") {
           doc.text test.error[:message]
@@ -369,7 +369,7 @@ module Report
       
       doc.div(:class => "row") {
         doc.div(:class => "span3") {
-          doc.text 'Backtrace:'
+          doc.text @locale['suite.test.error.backtrace.label']
         }
         doc.div(:class => "span9") {
           doc.pre {
@@ -380,7 +380,7 @@ module Report
     end
     
     def _suite_div_expectations(index, test, doc)
-      doc.h4 'Test expectations'
+      doc.h4 @locale['suite.test.test_expectation.title']
      _suite_div_file_expectation index, test, doc
      _suite_div_text_expectations index, test, doc
     end
@@ -389,14 +389,14 @@ module Report
       if test.test_expectation && test.test_expectation['file']
         doc.div(:class => "row") {
           doc.div(:class => "span3") {
-            doc.text 'File:'
+            doc.text @locale['suite.test.test_expectation.file.label']
           }
           doc.div(:class => "span9") {
             doc.div(:class => "accordion", :id => "accordion_expectation_file_#{index}") {
               doc.div(:class => "accordion-group") {
                 doc.div(:class => "accordion-heading") {
                   doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_file_#{index}", :href => "#collapse_expectation_file_#{index}") {
-                    doc.text 'Expand / Collapse'
+                    doc.text "#{@locale['suite.data.expand']} / #{@locale['suite.data.collapse']}"
                   }
                 }
                 doc.div(:id => "collapse_expectation_file_#{index}", :class => "accordion-body collapse") {
@@ -413,10 +413,10 @@ module Report
         
         doc.div(:class => "row") {
           doc.div(:class => "span3") {
-            doc.text 'Status:'
+            doc.text @locale['suite.test.test_expectation.file.status.label']
           }
           doc.div(:class => "span9") {
-            doc.text test.status.test_file_status ? 'Passed' : 'Failed'
+            doc.text test.status.test_file_status ? @locale['suite.test.status.passed'].to_s : @locale['suite.test.status.failed']
           }
         }
         
@@ -438,14 +438,14 @@ module Report
             
       doc.div(:class => "row") {
         doc.div(:class => "span3") {
-          doc.text 'Text equals:'
+          doc.text @locale['suite.test.test_expectation.text_equals.label']
         }
         doc.div(:class => "span9") {
           doc.div(:class => "accordion", :id => "accordion_expectation_text_equals_#{index}") {
             doc.div(:class => "accordion-group") {
               doc.div(:class => "accordion-heading") {
                 doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_text_equals_#{index}", :href => "#collapse_expectation_text_equals_#{index}") {
-                  doc.text 'Expand / Collapse'
+                  doc.text "#{@locale['suite.data.expand']} / #{@locale['suite.data.collapse']}"
                 }
               }
               doc.div(:id => "collapse_expectation_text_equals_#{index}", :class => "accordion-body collapse") {
@@ -462,7 +462,7 @@ module Report
       
       doc.div(:class => "row") {
         doc.div(:class => "span3") {
-          doc.text 'Status:'
+          doc.text @locale['suite.test.status.label']
         }
         doc.div(:class => "span9") {
           doc.text _format_test_status(test)
@@ -477,14 +477,14 @@ module Report
             
       doc.div(:class => "row") {
         doc.div(:class => "span3") {
-          doc.text 'Text contains:'
+          doc.text @locale['suite.test.test_expectation.text_contains.label']
         }
         doc.div(:class => "span9") {
           doc.div(:class => "accordion", :id => "accordion_expectation_text_contains_#{index}") {
             doc.div(:class => "accordion-group") {
               doc.div(:class => "accordion-heading") {
                 doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_text_contains_#{index}", :href => "#collapse_expectation_text_contains_#{index}") {
-                  doc.text 'Expand / Collapse'
+                  doc.text "#{@locale['suite.data.expand']} / #{@locale['suite.data.collapse']}"
                 }
               }
               doc.div(:id => "collapse_expectation_text_contains_#{index}", :class => "accordion-body collapse") {
@@ -501,7 +501,7 @@ module Report
       
       doc.div(:class => "row") {
         doc.div(:class => "span3") {
-          doc.text 'Status:'
+          doc.text @locale['suite.test.test_expectation.text_contains.status.label']
         }
         doc.div(:class => "span9") {
           doc.text _format_test_status(test)
@@ -516,14 +516,14 @@ module Report
             
       doc.div(:class => "row") {
         doc.div(:class => "span3") {
-          doc.text 'Text not contains:'
+          doc.text @locale['suite.test.test_expectation.text_not_contains.label']
         }
         doc.div(:class => "span9") {
           doc.div(:class => "accordion", :id => "accordion_expectation_text_not_contains_#{index}") {
             doc.div(:class => "accordion-group") {
               doc.div(:class => "accordion-heading") {
                 doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_text_not_contains_#{index}", :href => "#collapse_expectation_text_not_contains_#{index}") {
-                  doc.text 'Expand / Collapse'
+                  doc.text "#{@locale['suite.data.expand']} / #{@locale['suite.data.collapse']}"
                 }
               }
               doc.div(:id => "collapse_expectation_text_not_contains_#{index}", :class => "accordion-body collapse") {
@@ -540,7 +540,7 @@ module Report
       
       doc.div(:class => "row") {
         doc.div(:class => "span3") {
-          doc.text 'Status:'
+          doc.text @locale['suite.test.test_expectation.text_not_contains.status.label']
         }
         doc.div(:class => "span9") {
           doc.text _format_test_status(test)
@@ -555,14 +555,14 @@ module Report
             
       doc.div(:class => "row") {
         doc.div(:class => "span3") {
-          doc.text 'Text regex:'
+          doc.text @locale['suite.test.test_expectation.text_regex.label']
         }
         doc.div(:class => "span9") {
           doc.div(:class => "accordion", :id => "accordion_expectation_text_regex_#{index}") {
             doc.div(:class => "accordion-group") {
               doc.div(:class => "accordion-heading") {
                 doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse", 'data-parent' => "#accordion_expectation_text_regex_#{index}", :href => "#collapse_expectation_text_regex_#{index}") {
-                  doc.text 'Expand / Collapse'
+                  doc.text "#{@locale['suite.data.expand']} / #{@locale['suite.data.collapse']}"
                 }
               }
               doc.div(:id => "collapse_expectation_text_regex_#{index}", :class => "accordion-body collapse") {
@@ -579,7 +579,7 @@ module Report
       
       doc.div(:class => "row") {
         doc.div(:class => "span3") {
-          doc.text 'Status:'
+          doc.text @locale['suite.test.test_expectation.text_regex.status.label']
         }
         doc.div(:class => "span9") {
           doc.text _format_test_status(test)
@@ -590,8 +590,8 @@ module Report
     end
     
     def _suite_div_expected_output(index, test, doc)
-      doc.h4 'Test output'
       if test.test_actual
+        doc.h4 @locale['sutie.test.test_output.title']
         doc.div(:class => "row") {
           doc.div(:class => "span3") { doc.text 'Response:' }
         
@@ -600,7 +600,7 @@ module Report
               doc.div(:class => "accordion-group") {
                 doc.div(:class => "accordion-heading") {
                   doc.a(:class => "accordion-toggle", 'data-toggle' => "collapse",  'data-parent' => "#accordion_output_test_#{index}", :href => "#collapse_output_test_#{index}") {
-                    doc.text 'Expand / Collapse'
+                    doc.text "#{@locale['suite.data.expand']} / #{@locale['suite.data.collapse']}"
                   }
                 }
                 doc.div(:id => "collapse_output_test_#{index}", :class => "accordion-body collapse") {
