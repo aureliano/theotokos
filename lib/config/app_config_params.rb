@@ -16,6 +16,7 @@ module Theotokos
         ENV['logger.stdout.layout.date_pattern'] = params['logger.stdout.layout.date_pattern'] ||= '%Y-%m-%d %H:%M:%S'
         ENV['logger.rolling_file.level'] = params['logger.rolling_file.level']
         ENV['logger.rolling_file.file'] = params['logger.rolling_file.file']
+        ENV['logger.rolling_file.file.append_date'] = params['logger.rolling_file.file.append_date'].to_s
         ENV['logger.rolling_file.pattern'] = params['logger.rolling_file.pattern']
         ENV['logger.rolling_file.date_pattern'] = params['logger.rolling_file.date_pattern']
         ENV['app.config.params.loaded'] = 'true'

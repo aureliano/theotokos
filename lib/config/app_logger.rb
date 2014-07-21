@@ -18,13 +18,16 @@ module Theotokos
         dir = File.dirname ENV['logger.rolling_file.file']
         FileUtils.mkdir_p dir unless File.exist? dir
         
+        file = ENV['logger.rolling_file.file'].dup
+        file << ".#{Time.now.strftime('%Y-%m-%d')}" unless ENV['logger.rolling_file.file.append_date'] == 'false'
+        
         Logging.appenders.rolling_file(
-          ENV['logger.rolling_file.file'],
-          :level => ENV['logger.rolling_file.level'].to_sym,
-          :layout => Logging::Layouts::Pattern.new(:date_pattern => ENV['logger.rolling_file.date_pattern'], :pattern => ENV['logger.rolling_file.pattern'])
+          file, :level => ENV['logger.rolling_file.level'].to_sym,
+          :layout => Logging::Layouts::Pattern.new(:date_pattern => ENV['logger.rolling_file.date_pattern'],
+          :pattern => ENV['logger.rolling_file.pattern'])
         )
         
-        @@appenders << ENV['logger.rolling_file.file'] unless @@appenders.include? ENV['logger.rolling_file.file']
+        @@appenders << file unless @@appenders.include? file
       end
       
       def self.create_logger(source = nil)
