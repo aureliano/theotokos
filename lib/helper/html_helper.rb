@@ -437,7 +437,7 @@ module Theotokos
             doc.text locale['suite.test.status.label']
           }
           doc.div(:class => "span9") {
-            doc.text _format_test_status(test)
+            doc.text _format_test_status(locale, test)
           }
         }
         
@@ -476,7 +476,7 @@ module Theotokos
             doc.text locale['suite.test.test_expectation.text_contains.status.label']
           }
           doc.div(:class => "span9") {
-            doc.text _format_test_status(test)
+            doc.text _format_test_status(locale, test)
           }
         }
         
@@ -515,7 +515,7 @@ module Theotokos
             doc.text locale['suite.test.test_expectation.text_not_contains.status.label']
           }
           doc.div(:class => "span9") {
-            doc.text _format_test_status(test)
+            doc.text _format_test_status(locale, test)
           }
         }
         
@@ -554,7 +554,7 @@ module Theotokos
             doc.text locale['suite.test.test_expectation.text_regex.status.label']
           }
           doc.div(:class => "span9") {
-            doc.text _format_test_status(test)
+            doc.text _format_test_status(locale, test)
           }
         }
         

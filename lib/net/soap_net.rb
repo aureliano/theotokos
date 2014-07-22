@@ -11,7 +11,7 @@ module Net
       begin
         logger.debug "Send request to service '#{service}'"
         response = client.call service.to_sym, :message => options[:params]
-        xml = response.xml
+        xml = Nokogiri::XML(response.xml, nil, "UTF-8").to_xml
         success = true
       rescue Exception => ex
         return { :success => false, :xml => Nokogiri::XML(ex.http.body, nil, "UTF-8").to_xml } if ex.instance_of? Savon::SOAPFault      
