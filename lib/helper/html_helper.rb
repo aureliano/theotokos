@@ -578,7 +578,7 @@ module Theotokos
                   doc.div(:id => "collapse_output_test_#{index}", :class => "accordion-body collapse") {
                     doc.div(:class => "accordion-inner") {
                       doc.pre {
-                        doc.text _format_xml(_actual_file test.test_actual)
+                        doc.text _actual_file test.test_actual
                       }
                     }
                   }
