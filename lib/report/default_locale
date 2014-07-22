@@ -3,8 +3,8 @@ date.pattern: '%Y-%m-%d %l:%M:%S %p'
 index.page.title: Web Service Tests Report
 index.title: Web Service Tests Report
 index.subtitle: Report date <% report_date %>
-index.success.label: Success! All tests have passed
-index.error.label: Failure! <% total_failures %> broken test(s)
+index.success.message: Success! All tests have passed.
+index.error.message: Failure! <% total_failures %> broken test(s).
 index.overview.title: Overview
 index.overview.summary: Project of automated testing of web service. Actually <% total_test_suites %> test suite(s) is(are) implemented totaling <% total_test_cases %> test case(s).
 index.metadata.title: Metadata

@@ -54,11 +54,11 @@ module Theotokos
       def _index_div_result(app, locale, doc)
         if app.success?
           doc.div(:class => "alert alert-success") {
-            doc.h3 locale['index.success.label']
+            doc.h3 locale['index.success.message']
           }
         else
           doc.div(:class => "alert alert-error") {
-            doc.h3 locale['index.error.label'].to_s.sub(/<%\s*total_failures\s*%>/, app.total_failures.to_s)
+            doc.h3 locale['index.error.message'].to_s.sub(/<%\s*total_failures\s*%>/, app.total_failures.to_s)
           }
         end
       end
