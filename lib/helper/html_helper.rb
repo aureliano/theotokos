@@ -617,13 +617,13 @@ module Theotokos
         end
       end
       
-      def _format_test_status(test)
+      def _format_test_status(locale, test)
         if test.skip
-          'Skipped'
+          locale['suite.test.status.skipped']
         elsif test.status.test_text_status.nil?
-          'Not performed'
+          locale['suite.test.status.skipped']
         else
-          ((test.status.test_text_status[:contains])) ? 'Passed' : 'Failed'
+          ((test.status.test_text_status[:contains])) ? locale['suite.test.status.passed'] : locale['suite.test.status.failed']
         end
       end
       
