@@ -15,3 +15,16 @@ Rake::TestTask.new do |tester|
   tester.test_files = test_files
   tester.verbose = true
 end
+
+desc 'Install this project locally as a Gem'
+task :install_locally do
+  Rake::Task['test:unit'].execute
+  
+  puts `gem build theotokos.gemspec`
+  version = ''
+  `ls | grep theotokos-`.to_s.split("\n").each do |f|
+    v = f.sub('theotokos-', '').sub('.gem', '')
+    version = v if v > version
+  end
+  puts `gem install theotokos-#{version}.gem`
+end
