@@ -8,6 +8,7 @@ module Theotokos
       yield self if block_given?
       
       AppConfigParams.load_app_config_params unless ENV['app.config.params.loaded'] == 'true'
+      ENV['ws.test.reports.locale'] = @execution.internationalization unless @execution.internationalization.nil?
       AppLogger.add_stdout_logger
       AppLogger.add_rolling_file_logger if AppConfigParams.rolling_file_logger_defined?
       @logger = AppLogger.create_logger self

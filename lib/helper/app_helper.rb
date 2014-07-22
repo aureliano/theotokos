@@ -29,6 +29,10 @@ module Theotokos
           end
           command.report_formats = params
         end
+        
+        opts.on("-i", "--internationalization [OPT]", String, "Sets custom locale. Example: en, pt etc.") do |internationalization|
+          command.internationalization = internationalization
+        end
 
         opts.on_tail("-h", "--help", "Show this message") do
           puts opts

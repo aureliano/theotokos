@@ -8,7 +8,7 @@ module Theotokos
         yield self if block_given?
       end
       
-      attr_accessor :test_files, :test_index, :report_formats, :tags, :execution_path
+      attr_accessor :test_files, :test_index, :report_formats, :tags, :execution_path, :internationalization
     
     end
 

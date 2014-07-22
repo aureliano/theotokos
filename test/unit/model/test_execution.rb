@@ -11,6 +11,7 @@ class TestExecution < Test::Unit::TestCase
     assert_nil exec.test_files
     assert_nil exec.test_index
     assert_nil exec.tags
+    assert_nil exec.internationalization
     
     exec.test_files = ['/path/to/file.yml']
     assert_equal exec.test_files, ['/path/to/file.yml']
@@ -20,6 +21,9 @@ class TestExecution < Test::Unit::TestCase
     
     exec.tags = ['dev', 'test']
     assert_equal exec.tags, ['dev', 'test']
+    
+    exec.internationalization = 'en'
+    assert_equal 'en', exec.internationalization
   end
   
 end
