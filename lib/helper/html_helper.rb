@@ -565,7 +565,7 @@ module Theotokos
         if test.test_actual
           doc.h4 locale['sutie.test.test_output.title']
           doc.div(:class => "row") {
-            doc.div(:class => "span3") { doc.text 'Response:' }
+            doc.div(:class => "span3") { doc.text locale['sutie.test.test_output.response.label'] }
           
             doc.div(:class => "span9") {
               doc.div(:class => "accordion", :id => "accordion_output_test_#{index}") {
