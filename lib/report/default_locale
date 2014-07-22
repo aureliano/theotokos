@@ -19,6 +19,8 @@ index.failures.label: Failures
 index.total.label: Total
 index.statistics.title: Statistics
 index.statistics.success_failures.title: Success x Failures
+index.statistics.total_tags.title: 'Total by tags (none: tests without tag)'
+index.statistics.stats_tags.title: Percentage of tags (total x percentage)
 
 suite.page.title: Test suite result
 suite.title: Test suite report

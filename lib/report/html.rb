@@ -19,7 +19,7 @@ module Report
       
       file = "#{ENV['ws.test.reports.path']}/index.html"
       File.open(file, 'w') {|file| file.write Helper.build_index_page(@app, @locale, @ws_config, @tags) }
-      @logger.info " -- HTML report saved to #{file}" unless ENV['ENVIRONMENT'] == 'test'
+      @logger.info "HTML report saved to #{file}" unless ENV['ENVIRONMENT'] == 'test'
       
       @app.suites.each do |suite|
         file = "#{ENV['ws.test.reports.path']}/#{suite.model.name}.html"

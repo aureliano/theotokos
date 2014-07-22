@@ -147,7 +147,21 @@ module Theotokos
           doc.h5 "3.2.1 - #{locale['index.statistics.success_failures.title']}"
           doc.canvas(:id => "success_failures_chart", :width => "250", :height => "250")
           doc.script {
-            doc.text ChartFactory.pie_chart(:id => 'success_failures_chart', :total_success => app.total_success, :total_failures => app.total_failures)
+            doc.text ChartFactory.success_failure_chart(:id => 'success_failures_chart', :total_success => app.total_success, :total_failures => app.total_failures)
+          }
+          
+          tags_stats = app.tags_stats
+          doc.h5 "3.2.2 - #{locale['index.statistics.total_tags.title']}"
+          doc.canvas(:id => "total_tags_chart", :width => "#{tags_stats.keys.size * 100}", :height => "300")
+          doc.script {
+            doc.text ChartFactory.totals_tags_chart(:id => 'total_tags_chart', :stats => tags_stats)
+          }
+          
+          tags_stats = app.tags_stats
+          doc.h5 "3.2.3 - #{locale['index.statistics.stats_tags.title']}"
+          doc.canvas(:id => "stats_tags_chart", :width => "#{tags_stats.keys.size * 100}", :height => "300")
+          doc.script {
+            doc.text ChartFactory.stats_tags_chart(:id => 'stats_tags_chart', :stats => tags_stats)
           }
         }
       end
