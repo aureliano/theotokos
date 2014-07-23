@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.authors      = ["Aurealino"]
   s.email        = 'aureliano.franca@hotmail.com'
   s.homepage     = 'https://github.com/aureliano/theotokos'
-  s.license      = 'GPL'
+  s.license      = 'MIT'
   s.platform     = Gem::Platform::RUBY
   s.required_ruby_version = ">= 1.9.3"
   
