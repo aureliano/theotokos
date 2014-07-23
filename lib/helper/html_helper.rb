@@ -241,7 +241,7 @@ module Theotokos
               doc.text locale['suite.test_cases.label']
             }
             doc.div(:class => 'span9') {
-              suite.test_results.size
+              doc.text suite.test_results.size
             }
           }
           
