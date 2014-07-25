@@ -12,5 +12,8 @@ Install by Rubygems `gem install theotokos`
 ### Documentation
 Visit the wiki page in order to get access to documentation. https://github.com/aureliano/theotokos/wiki
 
+- [Backlog](https://gist.github.com/aureliano/132e4db138fddd1c25b0)
+- [Road map](https://gist.github.com/aureliano/8b26ef0f0bc787485707)
+
 =======
 License - [MIT](https://github.com/aureliano/theotokos/blob/master/LICENSE)
