@@ -4,7 +4,7 @@ Theotokos
 [![Build Status](https://travis-ci.org/aureliano/theotokos.png?branch=master)](https://travis-ci.org/aureliano/theotokos)
 
 ### Overview
-Theotokos is a gem for web service testing. Provides an easy way to create test suites using YAML as test model.It aims to avoid code implementation of web service tests the most as possible. So any one which is not so closed to programming can design a simple model file and let Theotokos do the job.
+Theotokos is a gem for web service testing. It provides an easy way to create test suites by using YAML as modeling language. It aims to avoid code implementation of web service tests as much as possible. So that non-programmers can design a simple model file and let Theotokos do the job.
 
 ### Get ready
 Install by Rubygems `gem install theotokos`
