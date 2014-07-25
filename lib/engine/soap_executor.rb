@@ -56,7 +56,7 @@ module Theotokos
             next
           end
             
-          res = SoapNet.send_request :wsdl => @test_suite.wsdl, :ws_config => @ws_config,
+          res = Net::SoapNet.send_request :wsdl => @test_suite.wsdl, :ws_config => @ws_config,
             :ws_security => test.ws_security, :service => @test_suite.service, :params => test.input
           
           if res[:success] == false && !test_result.error_expected
