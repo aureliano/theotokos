@@ -3,9 +3,9 @@ require 'requires.rb'
 
 Gem::Specification.new do |s|
   s.name         = 'theotokos'
-  s.version      = Theotokos::VERSION
-  s.date         = '2014-07-15'
-  s.summary      = "theotokos-#{Theotokos::VERSION} Tool to easily test web services."
+  s.version      = Theotokos::RELEASE_VERSION
+  s.date         = Theotokos::RELEASE_DATE
+  s.summary      = "theotokos-#{Theotokos::RELEASE_VERSION} Tool to easily test web services."
   s.description  = "A gem for web service testing. Allows easily create test suites using YAML as test model."
   s.authors      = ["Aurealino"]
   s.email        = 'aureliano.franca@hotmail.com'
